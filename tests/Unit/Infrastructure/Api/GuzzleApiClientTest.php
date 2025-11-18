@@ -19,6 +19,7 @@ use RuntimeException;
 class GuzzleApiClientTest extends TestCase
 {
     private ClientInterface $httpClient;
+
     private GuzzleApiClient $apiClient;
 
     protected function setUp(): void

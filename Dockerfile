@@ -14,6 +14,19 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN a2enmod rewrite
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
+# Configure virtual host for public directory
+RUN echo '<VirtualHost *:80>\n\
+    DocumentRoot /var/www/html/public\n\
+    DirectoryIndex index.php index.html\n\
+    <Directory /var/www/html/public>\n\
+        AllowOverride All\n\
+        Require all granted\n\
+        Options Indexes FollowSymLinks MultiViews\n\
+    </Directory>\n\
+    ErrorLog ${APACHE_LOG_DIR}/error.log\n\
+    CustomLog ${APACHE_LOG_DIR}/access.log combined\n\
+</VirtualHost>' > /etc/apache2/sites-available/000-default.conf
+
 # Configure PHP for development (can be overridden for production)
 RUN echo "display_errors=On" >> /usr/local/etc/php/conf.d/errors.ini
 RUN echo "error_reporting=E_ALL" >> /usr/local/etc/php/conf.d/errors.ini
