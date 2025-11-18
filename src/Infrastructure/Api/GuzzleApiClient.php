@@ -25,10 +25,10 @@ class GuzzleApiClient implements ApiClientInterface
     public function fetchUserData(int $userId): array
     {
         try {
-            $response = $this->httpClient->request('GET', self::BASE_URL . "/users/{$userId}");
+            $response = $this->httpClient->request('GET', self::BASE_URL . ('/users/' . $userId));
 
             if ($response->getStatusCode() !== 200) {
-                throw new RuntimeException("API returned status code {$response->getStatusCode()}");
+                throw new RuntimeException('API returned status code ' . $response->getStatusCode());
             }
 
             $data = json_decode($response->getBody()->getContents(), true, 512, JSON_THROW_ON_ERROR);
@@ -38,8 +38,8 @@ class GuzzleApiClient implements ApiClientInterface
             }
 
             return $this->validateResponseStructure($data);
-        } catch (GuzzleException $e) {
-            throw new RuntimeException("Failed to fetch user data: {$e->getMessage()}", 0, $e);
+        } catch (GuzzleException $guzzleException) {
+            throw new RuntimeException('Failed to fetch user data: ' . $guzzleException->getMessage(), 0, $guzzleException);
         }
     }
 
@@ -56,7 +56,7 @@ class GuzzleApiClient implements ApiClientInterface
 
         foreach ($requiredFields as $field) {
             if (!array_key_exists($field, $data)) {
-                throw new RuntimeException("Required field '{$field}' is missing from API response");
+                throw new RuntimeException(sprintf("Required field '%s' is missing from API response", $field));
             }
         }
 

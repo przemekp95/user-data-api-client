@@ -86,7 +86,6 @@ class InMemoryCacheTest extends TestCase
         // Manually modify internal storage to expire instantly
         $reflection = new \ReflectionClass($this->cache);
         $storageProperty = $reflection->getProperty('storage');
-        $storageProperty->setAccessible(true);
 
         $storage = $storageProperty->getValue($this->cache);
         $storage[$key]['expires_at'] = time() - 1; // Expire in the past
@@ -126,7 +125,6 @@ class InMemoryCacheTest extends TestCase
         // Get reflection to access private storage for verification
         $reflection = new \ReflectionClass($this->cache);
         $storageProperty = $reflection->getProperty('storage');
-        $storageProperty->setAccessible(true);
 
         // Before cleanExpired - both entries exist
         $storageBefore = $storageProperty->getValue($this->cache);

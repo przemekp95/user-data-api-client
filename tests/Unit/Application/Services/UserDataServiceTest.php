@@ -18,7 +18,9 @@ use RuntimeException;
 class UserDataServiceTest extends TestCase
 {
     private ApiClientInterface $apiClient;
+
     private CacheInterface $cache;
+
     private UserDataService $service;
 
     protected function setUp(): void

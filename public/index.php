@@ -44,8 +44,8 @@ function handleRequest(UserDataService $userService): void
         // Send JSON response
         sendJsonResponse($userData, 200);
 
-    } catch (Exception $e) {
-        error_log("Error processing request: " . $e->getMessage());
+    } catch (Exception $exception) {
+        error_log("Error processing request: " . $exception->getMessage());
 
         // Don't expose internal errors to client (security best practice)
         sendJsonResponse(['error' => 'Internal server error'], 500);
@@ -64,7 +64,7 @@ function sendJsonResponse(mixed $data, int $statusCode): void
 }
 
 // Security headers for API protection
-header('Content-Security-Policy: default-src \'none\'; frame-ancestors \'none\''); // Prevent XSS, clickjacking
+header("Content-Security-Policy: default-src 'none'; frame-ancestors 'none'"); // Prevent XSS, clickjacking
 header('X-Frame-Options: DENY'); // Prevent clickjacking
 header('X-Content-Type-Options: nosniff'); // Prevent MIME sniffing
 header('Referrer-Policy: strict-origin-when-cross-origin'); // Limit referrer information

@@ -15,6 +15,7 @@ use App\Domain\DTO\UserDataDTO;
 class UserDataService
 {
     private const CACHE_KEY_PREFIX = 'user_data_';
+
     private const CACHE_TTL_SECONDS = 60;
 
     public function __construct(

@@ -10,24 +10,8 @@ namespace App\Domain\DTO;
  */
 final class UserDataDTO implements \JsonSerializable
 {
-    public readonly int $id;
-    public readonly string $name;
-    public readonly string $email;
-    public readonly string $city;
-    public readonly string $company;
-
-    public function __construct(
-        int $id,
-        string $name,
-        string $email,
-        string $city,
-        string $company,
-    ) {
-        $this->id = $id;
-        $this->name = $name;
-        $this->email = $email;
-        $this->city = $city;
-        $this->company = $company;
+    public function __construct(public readonly int $id, public readonly string $name, public readonly string $email, public readonly string $city, public readonly string $company)
+    {
     }
 
     public function jsonSerialize(): array
