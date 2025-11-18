@@ -22,9 +22,9 @@ RUN echo "error_reporting=E_ALL" >> /usr/local/etc/php/conf.d/errors.ini
 WORKDIR /var/www/html
 
 # Copy composer files and install dependencies
-COPY composer.json composer.lock ./
+COPY composer.json composer.lock* ./
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-RUN composer install --no-dev --optimize-autoloader
+RUN if [ -f composer.lock ]; then composer install --no-dev --optimize-autoloader; else composer install --no-dev --optimize-autoloader --no-scripts --no-autoloader; fi
 
 # Copy application code
 COPY . .
