@@ -20,3 +20,6 @@ Thumbs.db
 # Environment files
 .env
 .env.local
+
+# PHP Code Style Fixer cache
+.php-cs-fixer.cache
