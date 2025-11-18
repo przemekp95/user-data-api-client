@@ -1,5 +1,4 @@
 {
-
     "description": "Simple API client for fetching user data with caching",
     "type": "project",
     "require": {
@@ -9,12 +8,8 @@
     "require-dev": {
         "phpunit/phpunit": "^10.0",
         "mockery/mockery": "^1.6",
-<<<<<<< HEAD
-        "friendsofphp/php-cs-fixer": "^3.89"
-=======
         "friendsofphp/php-cs-fixer": "^3.89",
         "rector/rector": "^2.2"
->>>>>>> 04e31a2 (feat: complete CI/CD pipeline with working PHP CS Fixer configuration)
     },
     "autoload": {
         "psr-4": {
