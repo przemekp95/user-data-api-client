@@ -86,5 +86,18 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
     exit;
 }
 
+// Health check endpoint for production monitoring
+if (parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH) === '/health') {
+    header('Content-Type: application/json');
+    header('Cache-Control: no-cache');
+    http_response_code(200);
+    echo json_encode([
+        'status' => 'healthy',
+        'timestamp' => gmdate('c'),
+        'service' => 'user-data-api'
+    ], JSON_THROW_ON_ERROR);
+    exit;
+}
+
 // Process the request
 handleRequest($userService);
