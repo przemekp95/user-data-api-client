@@ -22,7 +22,7 @@ $userService = new UserDataService($apiClient, $cache);
 
 /**
  * Main endpoint handler
- * Following Single Responsibility Principle - only handles HTTP request/response
+ * Following Single Responsibility Principle - only handles HTTP request/response.
  */
 function handleRequest(UserDataService $userService): void
 {
@@ -45,7 +45,7 @@ function handleRequest(UserDataService $userService): void
         sendJsonResponse($userData, 200);
 
     } catch (Exception $exception) {
-        error_log("Error processing request: " . $exception->getMessage());
+        error_log('Error processing request: ' . $exception->getMessage());
 
         // Don't expose internal errors to client (security best practice)
         sendJsonResponse(['error' => 'Internal server error'], 500);
@@ -53,7 +53,7 @@ function handleRequest(UserDataService $userService): void
 }
 
 /**
- * Send JSON response following DRY principle
+ * Send JSON response following DRY principle.
  */
 function sendJsonResponse(mixed $data, int $statusCode): void
 {

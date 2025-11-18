@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * Test Driven Development - comprehensive cache behavior tests
- * Tests TTL, expiration, and cache operations
+ * Tests TTL, expiration, and cache operations.
  */
 class InMemoryCacheTest extends TestCase
 {

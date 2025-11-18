@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * Test Driven Development - tests for UserDataDTO
- * Following SOLID principles with focused test responsibility
+ * Following SOLID principles with focused test responsibility.
  */
 class UserDataDTOTest extends TestCase
 {

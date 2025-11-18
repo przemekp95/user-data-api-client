@@ -8,11 +8,10 @@ use App\Application\Interfaces\ApiClientInterface;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use RuntimeException;
-use Psr\Http\Message\ResponseInterface;
 
 /**
  * Guzzle-based API client implementation
- * Following Dependency Inversion Principle through interface implementation
+ * Following Dependency Inversion Principle through interface implementation.
  */
 class GuzzleApiClient implements ApiClientInterface
 {
@@ -20,7 +19,8 @@ class GuzzleApiClient implements ApiClientInterface
 
     public function __construct(
         private readonly ClientInterface $httpClient,
-    ) {}
+    ) {
+    }
 
     public function fetchUserData(int $userId): array
     {
@@ -44,10 +44,10 @@ class GuzzleApiClient implements ApiClientInterface
     }
 
     /**
-     * Validate that response contains required fields for our use case
+     * Validate that response contains required fields for our use case.
      *
-     * @param array $data Raw API response
-     * @return array Validated response data
+     * @param  array            $data Raw API response
+     * @return array            Validated response data
      * @throws RuntimeException When required fields are missing
      */
     private function validateResponseStructure(array $data): array

@@ -6,7 +6,7 @@ namespace App\Domain\DTO;
 
 /**
  * Data Transfer Object for processed user data response
- * Following Single Responsibility Principle - only holds data, no logic
+ * Following Single Responsibility Principle - only holds data, no logic.
  */
 final class UserDataDTO implements \JsonSerializable
 {

@@ -8,7 +8,7 @@ use App\Application\Interfaces\CacheInterface;
 
 /**
  * Simple in-memory cache implementation
- * Following Single Responsibility Principle - only handles caching operations
+ * Following Single Responsibility Principle - only handles caching operations.
  */
 class InMemoryCache implements CacheInterface
 {
@@ -59,7 +59,7 @@ class InMemoryCache implements CacheInterface
 
     /**
      * Clean expired cache entries (for garbage collection)
-     * This method can be called periodically to free memory
+     * This method can be called periodically to free memory.
      */
     public function cleanExpired(): void
     {

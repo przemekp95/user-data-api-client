@@ -13,7 +13,7 @@ use RuntimeException;
 
 /**
  * Test Driven Development - comprehensive tests for UserDataService
- * Tests caching behavior, error handling, and business logic
+ * Tests caching behavior, error handling, and business logic.
  */
 class UserDataServiceTest extends TestCase
 {
