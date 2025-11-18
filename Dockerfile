@@ -2,11 +2,13 @@
 FROM php:8.1-apache
 
 # Install system dependencies and PHP extensions
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -y --no-install-recommends \
     libpng-dev \
     libjpeg-dev \
     unzip \
-    && docker-php-ext-install pdo pdo_mysql
+    && docker-php-ext-install pdo pdo_mysql \
+    && rm -rf /var/lib/apt/lists/* \
+    && apt-get clean
 
 # Configure Apache
 RUN a2enmod rewrite
@@ -29,6 +31,9 @@ COPY . .
 
 # Set proper ownership
 RUN chown -R www-data:www-data /var/www/html
+
+# Switch to non-root user for security
+USER www-data
 
 # Basic health check
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
