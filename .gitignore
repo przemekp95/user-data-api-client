@@ -23,3 +23,6 @@ Thumbs.db
 
 # PHP Code Style Fixer cache
 .php-cs-fixer.cache
+
+# Rector cache
+var/rector/

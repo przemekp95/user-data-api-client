@@ -10,24 +10,26 @@ use App\Domain\DTO\UserDataDTO;
 
 /**
  * User data service following Single Responsibility Principle
- * Orchestrates API calls and caching to provide user data
+ * Orchestrates API calls and caching to provide user data.
  */
 class UserDataService
 {
     private const CACHE_KEY_PREFIX = 'user_data_';
+
     private const CACHE_TTL_SECONDS = 60;
 
     public function __construct(
         private readonly ApiClientInterface $apiClient,
         private readonly CacheInterface $cache,
-    ) {}
+    ) {
+    }
 
     /**
      * Get user data with caching
-     * Follows the Don't Repeat Yourself principle with consistent cache key generation
+     * Follows the Don't Repeat Yourself principle with consistent cache key generation.
      *
-     * @param int $userId User ID to retrieve
-     * @return UserDataDTO Processed user data
+     * @param  int               $userId User ID to retrieve
+     * @return UserDataDTO       Processed user data
      * @throws \RuntimeException When API request fails or data is invalid
      */
     public function getUserData(int $userId): UserDataDTO
@@ -53,7 +55,7 @@ class UserDataService
 
     /**
      * Generate cache key following consistent naming convention
-     * Following Don't Repeat Yourself principle
+     * Following Don't Repeat Yourself principle.
      */
     private function generateCacheKey(int $userId): string
     {
@@ -62,7 +64,7 @@ class UserDataService
 
     /**
      * Process raw API response into our domain DTO
-     * Following Single Responsibility Principle - data transformation logic
+     * Following Single Responsibility Principle - data transformation logic.
      */
     private function processApiResponse(array $apiData): UserDataDTO
     {
@@ -79,7 +81,7 @@ class UserDataService
 
     /**
      * Validate that processed data structure meets our domain requirements
-     * Following Fail Fast principle - validate early and clearly
+     * Following Fail Fast principle - validate early and clearly.
      */
     private function validateProcessedData(array $apiData): void
     {

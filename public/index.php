@@ -22,7 +22,7 @@ $userService = new UserDataService($apiClient, $cache);
 
 /**
  * Main endpoint handler
- * Following Single Responsibility Principle - only handles HTTP request/response
+ * Following Single Responsibility Principle - only handles HTTP request/response.
  */
 function handleRequest(UserDataService $userService): void
 {
@@ -44,8 +44,8 @@ function handleRequest(UserDataService $userService): void
         // Send JSON response
         sendJsonResponse($userData, 200);
 
-    } catch (Exception $e) {
-        error_log("Error processing request: " . $e->getMessage());
+    } catch (Exception $exception) {
+        error_log('Error processing request: ' . $exception->getMessage());
 
         // Don't expose internal errors to client (security best practice)
         sendJsonResponse(['error' => 'Internal server error'], 500);
@@ -53,7 +53,7 @@ function handleRequest(UserDataService $userService): void
 }
 
 /**
- * Send JSON response following DRY principle
+ * Send JSON response following DRY principle.
  */
 function sendJsonResponse(mixed $data, int $statusCode): void
 {
@@ -64,7 +64,7 @@ function sendJsonResponse(mixed $data, int $statusCode): void
 }
 
 // Security headers for API protection
-header('Content-Security-Policy: default-src \'none\'; frame-ancestors \'none\''); // Prevent XSS, clickjacking
+header("Content-Security-Policy: default-src 'none'; frame-ancestors 'none'"); // Prevent XSS, clickjacking
 header('X-Frame-Options: DENY'); // Prevent clickjacking
 header('X-Content-Type-Options: nosniff'); // Prevent MIME sniffing
 header('Referrer-Policy: strict-origin-when-cross-origin'); // Limit referrer information
