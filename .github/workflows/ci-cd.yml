@@ -1,0 +1,63 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ master, main ]
+  pull_request:
+    branches: [ master, main ]
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Run Tests & Quality Checks
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.1'
+        extensions: pdo, pdo_mysql
+        coverage: xdebug
+        tools: composer:v2
+
+    - name: Install dependencies
+      run: composer install --no-progress --prefer-dist --optimize-autoloader
+
+    - name: Run tests
+      run: php vendor/bin/phpunit --testdox --coverage-text --colors=always
+
+    - name: Check PHP syntax
+      run: find src tests -name "*.php" -exec php -l {} \;
+
+  docker:
+    name: Build & Test Docker Image
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Build Docker image
+      run: docker build -t php-user-api:test .
+
+    - name: Test container startup
+      run: |
+        docker run -d --name test-api -p 8080:80 php-user-api:test
+        sleep 5
+        docker logs test-api | head -20
+
+    - name: Test health endpoint
+      run: |
+        curl -f http://localhost:8080/health || (docker logs test-api && exit 1)
+
+    - name: Test user data endpoint
+      run: |
+        curl -f "http://localhost:8080?id=1" || (docker logs test-api && exit 1)
+
+    - name: Cleanup
+      run: docker stop test-api && docker rm test-api
