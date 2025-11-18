@@ -35,9 +35,9 @@ RUN chown -R www-data:www-data /var/www/html
 # Switch to non-root user for security
 USER www-data
 
-# Basic health check
+# Use actual API endpoint for health check (simpler than separate /health endpoint)
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-    CMD curl -f http://localhost/health || exit 1
+    CMD curl -f http://localhost?id=1 || exit 1
 
 EXPOSE 80
 CMD ["apache2-foreground"]
