@@ -158,6 +158,35 @@ class UserDataServiceTest extends TestCase
         $this->service->getUserData($userId);
     }
 
+    public function testThrowsExceptionForMissingCompanyStructure(): void
+    {
+        $userId = 1;
+        $invalidApiResponse = [
+            'id' => 1,
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+            'address' => ['city' => 'Test City'],
+            'company' => 'Invalid Company String' // Should be array, missing 'name' key
+        ];
+
+        // Mock cache miss
+        $this->cache->expects($this->once())
+            ->method('get')
+            ->with('user_data_1')
+            ->willReturn(null);
+
+        // Mock API returning invalid data structure where company is not an array
+        $this->apiClient->expects($this->once())
+            ->method('fetchUserData')
+            ->with(1)
+            ->willReturn($invalidApiResponse);
+
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('API response missing company.name field');
+
+        $this->service->getUserData($userId);
+    }
+
     public function testConsistentCacheKeyGeneration(): void
     {
         // Test that same user ID always generates same cache key (DRY principle)

@@ -83,7 +83,7 @@ jobs:
 
     - name: Test health endpoint
       run: |
-        curl -f http://localhost:8080/health || (docker logs test-api && exit 1)
+        curl -f "http://localhost:8080?id=1" || (docker logs test-api && exit 1)
 
     - name: Test user data endpoint
       run: |
