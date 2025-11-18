@@ -1,0 +1,22 @@
+# PHP Dependencies
+/vendor/
+composer.lock
+
+# Test cache
+/.phpunit.result.cache
+
+# IDE files
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+/*.log
+/logs/
+
+# Environment files
+.env
+.env.local
