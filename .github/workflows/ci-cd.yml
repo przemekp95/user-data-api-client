@@ -27,6 +27,26 @@ jobs:
     - name: Install dependencies
       run: composer install --no-progress --prefer-dist --optimize-autoloader
 
+    - name: Run PHPStan (Static Analysis / Linting)
+      run: |
+        if command -v phpstan &> /dev/null; then
+          ./vendor/bin/phpstan analyse src tests --error-format=github
+        else
+          echo "PHPStan not installed, installing..."
+          composer require --dev phpstan/phpstan
+          ./vendor/bin/phpstan analyse src tests
+        fi
+
+    - name: Code Formatting Check (PHP CS Fixer)
+      run: |
+        if command -v php-cs-fixer &> /dev/null; then
+          ./vendor/bin/php-cs-fixer fix --dry-run --diff --stop-on-violation
+        else
+          echo "PHP CS Fixer not installed, installing..."
+          composer require --dev friendsofphp/php-cs-fixer
+          ./vendor/bin/php-cs-fixer fix --dry-run --diff --stop-on-violation --no-interaction
+        fi
+
     - name: Run tests
       run: php vendor/bin/phpunit --testdox --coverage-text --colors=always
 
