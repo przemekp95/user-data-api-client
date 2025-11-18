@@ -13,6 +13,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Configure Apache
 RUN a2enmod rewrite
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
+RUN echo "DirectoryIndex index.php index.html" >> /etc/apache2/apache2.conf
 
 # Configure PHP for development (can be overridden for production)
 RUN echo "display_errors=On" >> /usr/local/etc/php/conf.d/errors.ini
