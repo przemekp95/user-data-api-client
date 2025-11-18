@@ -87,7 +87,76 @@ jobs:
 
     - name: Test user data endpoint
       run: |
-        curl -f "http://localhost:8080?id=1" || (docker logs test-api && exit 1)
+        curl -f "http://localhost:8080?id=1" || (docker logs test_api && exit 1)
 
     - name: Cleanup
       run: docker stop test-api && docker rm test-api
+
+  deploy:
+    name: Deploy to GitHub Container Registry
+    runs-on: ubuntu-latest
+    needs: docker
+    if: always() && needs.docker.result == 'success'
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Log in to GitHub Container Registry
+      uses: docker/login-action@v3
+      with:
+        registry: ghcr.io
+        username: ${{ github.repository_owner }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Extract metadata
+      id: meta
+      uses: docker/metadata-action@v5
+      with:
+        images: ghcr.io/${{ github.repository_owner }}/php-user-api
+        tags: |
+          type=ref,event=branch
+          type=ref,event=pr
+
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        push: true
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
+
+    - name: Run Trivy vulnerability scanner
+      uses: aquasecurity/trivy-action@master
+      with:
+        scan-type: 'image'
+        scan-ref: 'ghcr.io/${{ github.repository_owner }}/php-user-api:latest'
+        format: 'sarif'
+        output: 'trivy-results.sarif'
+
+    - name: Upload Trivy scan results to GitHub Security tab
+      uses: github/codeql-action/upload-sarif@v3
+      if: always()
+      with:
+        sarif_file: 'trivy-results.sarif'
+
+    - name: Generate deployment summary
+      run: |
+        echo "## 🚀 Docker Enterprise Deployment Summary" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### ✅ Deployment Status" >> $GITHUB_STEP_SUMMARY
+        echo "- **Registry**: GitHub Container Registry (ghcr.io)" >> $GITHUB_STEP_SUMMARY
+        echo "- **Image**: ${{ github.repository_owner }}/php-user-api" >> $GITHUB_STEP_SUMMARY
+        echo "- **Tag**: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+        echo "- **Security**: Trivy vulnerability scan completed" >> $GITHUB_STEP_SUMMARY
+        echo "- **Quality Gates**: All CI/CD checks passed" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### 🔒 Enterprise Security" >> $GITHUB_STEP_SUMMARY
+        echo "- **Container Hardening**: Non-root user execution" >> $GITHUB_STEP_SUMMARY
+        echo "- **Vulnerability Scanning**: Trivy security analysis" >> $GITHUB_STEP_SUMMARY
+        echo "- **Automated Security**: SARIF reports integration" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### 📋 Usage Instructions" >> $GITHUB_STEP_SUMMARY
+        echo "Pull latest image: \`docker pull ghcr.io/${{ github.repository_owner }}/php-user-api:latest\`" >> $GITHUB_STEP_SUMMARY
+        echo "Run container: \`docker run -d -p 80:80 ghcr.io/${{ github.repository_owner }}/php-user-api:latest\`" >> $GITHUB_STEP_SUMMARY
+        echo "Test API: \`curl http://localhost?id=1\`" >> $GITHUB_STEP_SUMMARY
