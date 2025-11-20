@@ -19,7 +19,9 @@ use PHPUnit\Framework\TestCase;
 class UserDataServiceIntegrationTest extends TestCase
 {
     private UserDataService $service;
+    /** @var \PHPUnit\Framework\MockObject\MockObject&ApiClientInterface */
     private ApiClientInterface $apiClient;
+    /** @var \PHPUnit\Framework\MockObject\MockObject&CacheInterface */
     private CacheInterface $cache;
 
     protected function setUp(): void
