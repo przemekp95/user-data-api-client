@@ -17,53 +17,91 @@ A simple PHP application that fetches user data from a public API with caching f
 
 ## Installation
 
+You can run this application using either local PHP development environment or Docker.
+
+### Local Installation
+
 1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/przemekp95/user-data-api-client.git
+   cd user-data-api-client
+   ```
+
+2. Install PHP dependencies:
+
+   ```bash
+   composer install
+   ```
+
+### Docker Installation
+
+#### Option 1: Use Pre-built Container Image (Recommended)
+
+Run the application directly from GitHub Container Registry without cloning the repository:
+
 ```bash
-git clone <repository-url>
-cd user-data-api-client
+# Pull the latest container image from GitHub Container Registry
+docker pull ghcr.io/przemekp95/user-data-api-client:latest
+
+# Run the container
+docker run -p 8080:80 ghcr.io/przemekp95/user-data-api-client:latest
 ```
 
-2. Install dependencies:
+#### Option 2: Build Locally (For Development)
+
+For customization or development, clone the repository first and build locally:
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/przemekp95/user-data-api-client.git
+   cd user-data-api-client
+   ```
+
+2. Build and run the container locally:
+
+   ```bash
+   docker build -t user-data-api-client .
+   docker run -p 8080:80 user-data-api-client
+   ```
+
+2. Install PHP dependencies:
+
+   ```bash
+   composer install
+   ```
+
+### Docker Installation
+
+#### Option 1: Use Pre-built Container Image (Recommended)
+
+Run the application directly from GitHub Container Registry without cloning the repository:
+
 ```bash
-composer install
+# Pull the latest container image from GitHub Container Registry
+docker pull ghcr.io/przemekp95/user-data-api-client:latest
+
+# Run the container
+docker run -p 8080:80 ghcr.io/przemekp95/user-data-api-client:latest
 ```
 
-## Usage
+#### Option 2: Build Locally (For Development)
 
-### API Endpoint
+For customization or development, clone the repository first and build locally:
 
-The application provides a single HTTP endpoint:
+1. Clone the repository:
 
-**GET** `/public/index.php?id={user_id}`
+   ```bash
+   git clone https://github.com/przemekp95/user-data-api-client.git
+   cd user-data-api-client
+   ```
 
-Parameters:
-- `id` (optional): User ID to fetch (defaults to 1)
+2. Build and run the container locally:
 
-### Response Format
-
-Returns JSON with the following structure:
-```json
-{
-  "id": 1,
-  "name": "Leanne Graham",
-  "email": "Sincere@april.biz",
-  "city": "Gwenborough",
-  "company": "Romaguera-Crona"
-}
-```
-
-### Error Responses
-
-- **400 Bad Request**: Invalid user ID (non-positive integer)
-- **500 Internal Server Error**: API failures or internal errors
-
-### Caching Behavior
-
-- Data is cached for 60 seconds
-- Subsequent requests for the same user within the cache period return cached data
-- Reduces external API calls following the DRY principle
-
-## Running Tests
+   ```bash
+   docker build -t user-data-api-client .
+   docker run -p 8080:80 user-data-api-client
 
 Execute all tests using PHPUnit:
 
