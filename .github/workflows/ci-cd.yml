@@ -112,7 +112,7 @@ jobs:
       run: docker stop test-api && docker rm test-api
 
   deploy:
-    name: Deploy to GitHub Container Registry
+    name: Build & Push Docker Image
     runs-on: ubuntu-latest
     needs: docker
     if: always() && needs.docker.result == 'success'
