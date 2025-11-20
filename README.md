@@ -2,7 +2,7 @@
 
 [![PHP Version](https://img.shields.io/badge/PHP-8.1+-blue.svg)](https://php.net/)
 [![Composer](https://img.shields.io/badge/Composer-2.x-orange.svg)](https://getcomposer.org/)
-[![Tests](https://img.shields.io/badge/Tests-46%20✓-green.svg)](https://phpunit.readthedocs.io/)
+[![Tests](https://img.shields.io/badge/Tests-50%20✓-green.svg)](https://phpunit.readthedocs.io/)
 [![License](https://img.shields.io/badge/License-MIT-lightgrey.svg)](LICENSE)
 
 A **production-ready** PHP application that fetches user data from a public API with intelligent caching, following clean code principles and SOLID design patterns.
