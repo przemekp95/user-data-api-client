@@ -193,8 +193,8 @@ Among the available options, the following choices were made:
 #### Why not other high-level libraries?
 
 Guzzle won because:
+
 - It is the most popular and trusted HTTP library in the PHP ecosystem
-- It has the best PSR-7 support, making it future-compatible
 - It provides optimal balance between functionality and simplicity
 
 ### Cache Implementation
