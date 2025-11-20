@@ -18,6 +18,15 @@ class SecurityFuzzingTest extends TestCase
 {
     private UserDataService $service;
 
+    public function __construct(?string $name = null, array $data = [], $dataName = '')
+    {
+        parent::__construct($name, $data, $dataName);
+
+        // Initialize readonly properties for PHPStan compliance
+        $this->apiClient = $this->createStub(ApiClientInterface::class);
+        $this->cache = $this->createStub(CacheInterface::class);
+    }
+
     /** @var \PHPUnit\Framework\MockObject\MockObject&ApiClientInterface */
     private readonly ApiClientInterface $apiClient;
 
