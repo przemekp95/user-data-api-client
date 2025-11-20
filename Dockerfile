@@ -1,4 +1,4 @@
-# PHP API container for development
+# PHP API container for development  
 FROM php:8.1-apache
 
 # Install system dependencies and PHP extensions
@@ -34,16 +34,19 @@ RUN echo "error_reporting=E_ALL" >> /usr/local/etc/php/conf.d/errors.ini
 # Set working directory
 WORKDIR /var/www/html
 
-# Copy composer files and install dependencies
+# Copy composer files and install dependencies (include dev for testing)
 COPY composer.json composer.lock* ./
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-RUN if [ -f composer.lock ]; then composer install --no-dev --optimize-autoloader; else composer install --no-dev --optimize-autoloader --no-scripts --no-autoloader; fi
+RUN composer install --optimize-autoloader
 
 # Copy application code
 COPY . .
 
 # Run tests during build to verify image quality (fails build if tests fail)
 RUN composer test --no-interaction
+
+# Remove dev dependencies to optimize production image size
+RUN composer install --no-dev --optimize-autoloader
 
 # Set proper ownership
 RUN chown -R www-data:www-data /var/www/html
