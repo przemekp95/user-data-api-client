@@ -109,18 +109,17 @@ jobs:
         labels: ${{ steps.meta.outputs.labels }}
 
     - name: Run Trivy vulnerability scanner
-      uses: aquasecurity/trivy-action@v0.65.0
-      with:
-        scan-type: 'image'
-        scan-ref: 'ghcr.io/${{ github.repository_owner }}/php-user-api:${{ github.sha }}'
-        format: 'sarif'
-        output: 'trivy-results.sarif'
-        skip-dirs: ''
-        skip-files: ''
-        vuln-type: 'os,library'
-        severity: 'HIGH,CRITICAL'
-        ignore-unfixed: false
-        exit-code: 1
+      run: |
+        docker run --rm -v /tmp/results:/tmp/results \
+          aquasecurity/trivy:latest image \
+          --format sarif \
+          --output /tmp/results/trivy-results.sarif \
+          --scanners vuln \
+          --severity HIGH,CRITICAL \
+          --exit-code 1 \
+          --ignore-unfixed \
+          ghcr.io/${{ github.repository_owner }}/php-user-api:${{ github.sha }}
+        cp /tmp/results/trivy-results.sarif ./trivy-results.sarif
 
     - name: Upload Trivy scan results to GitHub Security tab
       uses: github/codeql-action/upload-sarif@v4
