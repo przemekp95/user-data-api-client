@@ -1,6 +1,19 @@
 # User Data API Client
 
-A simple PHP application that fetches user data from a public API with caching functionality, following clean code principles and SOLID design patterns.
+[![PHP Version](https://img.shields.io/badge/PHP-8.1+-blue.svg)](https://php.net/)
+[![Composer](https://img.shields.io/badge/Composer-2.x-orange.svg)](https://getcomposer.org/)
+[![Tests](https://img.shields.io/badge/Tests-50%20✓-green.svg)](https://phpunit.readthedocs.io/)
+[![License](https://img.shields.io/badge/License-MIT-lightgrey.svg)](LICENSE)
+
+A **production-ready** PHP application that fetches user data from a public API with intelligent caching, following clean code principles and SOLID design patterns.
+
+**✨ Key Features:**
+
+- **Enterprise-grade architecture** with clean separation of concerns
+- **Comprehensive test suite** with 50 tests covering all functionality
+- **Security-first** design with multiple protection layers
+- **Production-ready** deployment with Docker and automated testing
+- **Performance optimized** with intelligent 60-second caching
 
 ## Features
 
@@ -34,11 +47,19 @@ You can run this application using either local PHP development environment or D
    composer install
    ```
 
+3. Run tests to verify installation:
+
+   ```bash
+   composer test
+   ```
+
+   > **Expected Output:** `OK (50 tests, 243 assertions)` - confirming all functionality works correctly.
+
 ### Docker Installation
 
 #### Option 1: Use Pre-built Container Image (Recommended)
 
-Run the application directly from GitHub Container Registry without cloning the repository:
+Run the application directly from GitHub Container Registry without cloning the repository. Images are created from tested code:
 
 ```bash
 # Pull the latest container image from GitHub Container Registry
@@ -46,7 +67,12 @@ docker pull ghcr.io/przemekp95/user-data-api-client:latest
 
 # Run the container
 docker run -p 8080:80 ghcr.io/przemekp95/user-data-api-client:latest
+
+# Test the running container
+curl -f "http://localhost:8080/index.php?id=1"
 ```
+
+> **Expected Response:** JSON object with user data, confirming the container works correctly.
 
 #### Option 2: Build Locally (For Development)
 
@@ -59,11 +85,25 @@ For customization or development, clone the repository first and build locally:
    cd user-data-api-client
    ```
 
-2. Build and run the container locally:
+2. Run tests locally to verify your setup before building:
+
+   ```bash
+   composer test
+   ```
+
+   > **Expected Output:** `OK (50 tests, 243 assertions)` - confirming all functionality works correctly.
+
+3. Build and run the container locally:
 
    ```bash
    docker build -t user-data-api-client .
    docker run -p 8080:80 user-data-api-client
+   ```
+
+4. Test the running container:
+
+   ```bash
+   curl -f "http://localhost:8080/index.php?id=1"
    ```
 
 ## Architecture
@@ -244,10 +284,21 @@ The codebase follows PSR-12 coding standards and clean code principles:
 
 ### Testing
 
-- Tests written before implementation (TDD)
-- Mocks used for external dependencies
-- Covers happy paths, error cases, and edge conditions
-- Tests both cached and uncached scenarios
+- **Comprehensive test suite** with 50 tests and 243 assertions
+- **Automated testing** using Composer hooks and CI/CD pipelines
+- **5-level testing pyramid**: Unit, Integration, Performance, Security, Contract
+- Tests written using Test-Driven Development (TDD) approach
+- Mocks used for external dependencies and third-party integrations
+- Covers happy paths, error cases, edge conditions, and boundary cases
+- Tests both cached and uncached scenarios with performance benchmarking
+
+#### Test Categories
+
+- **Unit Tests**: Individual components with isolated mocking
+- **Integration Tests**: Component interaction validation
+- **Performance Tests**: Speed and scalability benchmarking
+- **Security Tests**: Boundary testing and injection prevention
+- **Contract Tests**: External API dependency validation
 
 ## License
 

@@ -31,3 +31,20 @@ var/rector/
 *.sarif
 trivy-results.sarif
 security-scan-results/
+
+# Code coverage reports
+coverage/
+coverage.xml
+coverage.html
+htmlcov/
+coveage.json
+
+# Build artifacts
+build/
+dist/
+
+# Temporary files
+/tmp/
+/temp/
+*.tmp
+*.temp
