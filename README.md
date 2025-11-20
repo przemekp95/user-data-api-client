@@ -158,21 +158,22 @@ The endpoint implements multiple layers of security protection.
 
 #### GuzzleHttp Client
 
-#### Wybór GuzzleHttp Client
-Spośród dostępnych opcji zostały wybrane następujące opcje:
-- **GuzzleHttp\Client** - Zaimplementowana ✅
-- `file_get_contents()` + `json_decode()` - Odrzucona
-- Inne metody (np. cURL, fsockopen, itd.) - Odrzucone
+#### HTTP Client Selection
 
-#### Uzasadnienie wyboru GuzzleHttp\Client:
+Among the available options, the following choices were made:
+- **GuzzleHttp\Client** - Implemented ✅
+- `file_get_contents()` + `json_decode()` - Rejected
+- Other methods (e.g., cURL, fsockopen, etc.) - Rejected
 
-**Zalety GuzzleHttp\Client:**
-- **Asynchroniczność**: Obsługuje zapytania asynchroniczne, co pozwoli na przyszłe rozszerzenia bez zmiany API
-- **Wyjątkowa obsługa błędów**: Automatyczne mapowanie błędów HTTP na wyjątki PHP z kontekstem
-- **Middleware Pipeline**: Łatwe dodanie funkcjonalności cross-cutting (logowanie, retry, cache headers)
-- **PSR-7 zgodność**: Implementuje standardy PSR-7 (HTTP Messages), zapewniając interoperacyjność
-- **Bogaty ekosystem**: Duża społeczność, dobre wsparcie, regularne aktualizacje bezpieczeństwa
-- **Konfigurowalność**: Timeout, proxy, certyfikaty SSL, redirect handling - wszystko gotowe do użycia
+#### Justification for Choosing GuzzleHttp Client
+
+**Advantages of GuzzleHttp\Client:**
+- **Asynchronous support**: Enables future extensions with asynchronous requests without API changes
+- **Exceptional error handling**: Automatic mapping of HTTP errors to PHP exceptions with context
+- **Middleware Pipeline**: Easy addition of cross-cutting functionality (logging, retry, cache headers)
+- **PSR-7 compliance**: Implements PSR-7 standards (HTTP Messages), ensuring interoperability
+- **Rich ecosystem**: Large community, good support, regular security updates
+- **Configurability**: Timeout, proxy, SSL certificates, redirect handling - all ready to use out of the box
 
 #### Dlaczego nie file_get_contents() + json_decode()?
 
@@ -200,20 +201,20 @@ Guzzle wygrał ponieważ:
 
 #### In-Memory Cache
 
-#### Wybór In-Memory Cache zamiast innych rozwiązań
+#### In-Memory Cache Selection
 
-**In-Memory Cache wybrany ponieważ:**
-- **Simple Requirements**: Zadanie wymaga cache tylko dla pojedynczego procesu/requestu
-- **KISS Principle**: Najprostsze rozwiązanie spełniające wymagania
-- **Zero-dependencies**: Brak potrzeby baz danych czy zewnętrznych usług dla takiego zadania
-- **Performance**: Pamięć оперативna jest najszybszym możliwym storage
+**In-Memory Cache was chosen because:**
+- **Simple Requirements**: The task requires cache only for a single process/request
+- **KISS Principle**: Simplest solution meeting requirements
+- **Zero-dependencies**: No need for databases or external services for this task
+- **Performance**: Memory is the fastest possible storage
 
-**Alternatywy odrzucone:**
-- **Redis/Memcached**: Overkill dla pojedynczego procesu, wprowadza external dependency
-- **File-based cache**: Obniża performance, concurrency issues przy wielu procesach
-- **Database cache**: Zbyteczna dla tymczasového cachewania, overhead persistencji
+**Rejected Alternatives:**
+- **Redis/Memcached**: Overkill for single process, introduces external dependency
+- **File-based cache**: Reduces performance, concurrency issues with multiple processes
+- **Database cache**: Unnecessary for temporary caching, persistence overhead
 
-Cache implementuje właściwy interface, więc można latwo zamienić na dowolny storage bez zmiany business logic (Dependency Inversion Principle).
+Cache implements proper interface, so it can be easily replaced with any storage without changing business logic (Dependency Inversion Principle).
 
 ## Development
 
