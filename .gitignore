@@ -1,6 +1,7 @@
 # PHP Dependencies
 /vendor/
-composer.lock
+# vendor/ (zainstalowane pakiety) jest ignorowane, ale composer.lock MUSI być w repozytorium
+# composer.lock
 
 # Test cache
 /.phpunit.result.cache
