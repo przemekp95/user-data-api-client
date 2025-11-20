@@ -35,3 +35,16 @@ security-scan-results/
 
 # Documentation (README is useful but docs can be heavy)
 docs/
+
+# Build artifacts and generated files
+build/
+dist/
+coverage/
+*.xml
+*.html
+htmlcov/
+coverage.json
+
+# Temporary directories
+tmp/
+temp/
