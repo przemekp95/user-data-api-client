@@ -89,6 +89,20 @@ jobs:
       run: |
         curl -f "http://localhost:8080?id=1" || (docker logs test_api && exit 1)
 
+    - name: Run Trivy vulnerability scanner on local image
+      uses: aquasecurity/trivy-action@master
+      with:
+        scan-type: 'image'
+        scan-ref: 'php-user-api:test'
+        format: 'sarif'
+        output: 'trivy-results.sarif'
+
+    - name: Upload Trivy scan results to GitHub Security tab
+      uses: github/codeql-action/upload-sarif@v4
+      if: always()
+      with:
+        sarif_file: trivy-results.sarif
+
     - name: Cleanup
       run: docker stop test-api && docker rm test-api
 
@@ -126,24 +140,6 @@ jobs:
         push: true
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
-
-    - name: Pull image for scanning
-      run: |
-        docker pull ghcr.io/${{ github.actor }}/php-user-api:latest
-
-    - name: Run Trivy vulnerability scanner
-      uses: aquasecurity/trivy-action@master
-      with:
-        scan-type: 'image'
-        scan-ref: 'ghcr.io/${{ github.actor }}/php-user-api:latest'
-        format: 'sarif'
-        output: 'trivy-results.sarif'
-
-    - name: Upload Trivy scan results to GitHub Security tab
-      uses: github/codeql-action/upload-sarif@v4
-      if: always()
-      with:
-        sarif_file: trivy-results.sarif
 
     - name: Generate deployment summary
       run: |
