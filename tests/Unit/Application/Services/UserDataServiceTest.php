@@ -17,8 +17,10 @@ use RuntimeException;
  */
 class UserDataServiceTest extends TestCase
 {
+    /** @var \PHPUnit\Framework\MockObject\MockObject&ApiClientInterface */
     private ApiClientInterface $apiClient;
 
+    /** @var \PHPUnit\Framework\MockObject\MockObject&CacheInterface */
     private CacheInterface $cache;
 
     private UserDataService $service;

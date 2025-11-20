@@ -18,6 +18,7 @@ use RuntimeException;
  */
 class GuzzleApiClientTest extends TestCase
 {
+    /** @var \PHPUnit\Framework\MockObject\MockObject&ClientInterface */
     private ClientInterface $httpClient;
 
     private GuzzleApiClient $apiClient;
