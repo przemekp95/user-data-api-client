@@ -104,9 +104,9 @@ jobs:
         push: false
         load: true
         tags: |
-          ghcr.io/${{ github.repository_owner }}/php-user-api:${{ github.sha }}
-          ${{ steps.meta.outputs.tags }}
-        labels: ${{ steps.meta.outputs.labels }}
+    - run: echo "meta tags: ${{ steps.meta.outputs.tags }}"
+
+    - name: Run Trivy vulnerability scanner
 
     - name: Run Trivy vulnerability scanner
      - run: echo "meta tags: ${{ steps.meta.outputs.tags }}"
