@@ -42,6 +42,9 @@ RUN if [ -f composer.lock ]; then composer install --no-dev --optimize-autoloade
 # Copy application code
 COPY . .
 
+# Run tests during build to verify image quality (fails build if tests fail)
+RUN composer test --no-interaction
+
 # Set proper ownership
 RUN chown -R www-data:www-data /var/www/html
 

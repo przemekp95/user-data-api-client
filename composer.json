@@ -24,6 +24,8 @@
     "scripts": {
         "test": "phpunit",
         "test:coverage": "phpunit --testdox",
+        "post-install-cmd": "@test",
+        "post-update-cmd": "@test",
         "qa": [
             "@test",
             "php-cs-fixer fix --config=.php-cs-fixer.php --dry-run --diff --stop-on-violation --no-interaction",

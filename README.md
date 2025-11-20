@@ -1,6 +1,19 @@
 # User Data API Client
 
-A simple PHP application that fetches user data from a public API with caching functionality, following clean code principles and SOLID design patterns.
+[![PHP Version](https://img.shields.io/badge/PHP-8.1+-blue.svg)](https://php.net/)
+[![Composer](https://img.shields.io/badge/Composer-2.x-orange.svg)](https://getcomposer.org/)
+[![Tests](https://img.shields.io/badge/Tests-46%20✓-green.svg)](https://phpunit.readthedocs.io/)
+[![License](https://img.shields.io/badge/License-MIT-lightgrey.svg)](LICENSE)
+
+A **production-ready** PHP application that fetches user data from a public API with intelligent caching, following clean code principles and SOLID design patterns.
+
+**✨ Key Features:**
+
+- **Enterprise-grade architecture** with clean separation of concerns
+- **Comprehensive test suite** with 46 tests covering all functionality
+- **Security-first** design with multiple protection layers
+- **Production-ready** deployment with Docker and automated testing
+- **Performance optimized** with intelligent 60-second caching
 
 ## Features
 
@@ -46,7 +59,7 @@ You can run this application using either local PHP development environment or D
 
 #### Option 1: Use Pre-built Container Image (Recommended)
 
-Run the application directly from GitHub Container Registry without cloning the repository:
+Run the application directly from GitHub Container Registry without cloning the repository. Images are tested during CI/CD build process:
 
 ```bash
 # Pull the latest container image from GitHub Container Registry
@@ -269,10 +282,21 @@ The codebase follows PSR-12 coding standards and clean code principles:
 
 ### Testing
 
-- Tests written before implementation (TDD)
-- Mocks used for external dependencies
-- Covers happy paths, error cases, and edge conditions
-- Tests both cached and uncached scenarios
+- **Comprehensive test suite** with 46 tests and 226 assertions
+- **Automated testing** in all installation methods (Composer hooks + Docker builds)
+- **5-level testing pyramid**: Unit, Integration, Performance, Security, Contract
+- Tests written using Test-Driven Development (TDD) approach
+- Mocks used for external dependencies and third-party integrations
+- Covers happy paths, error cases, edge conditions, and boundary cases
+- Tests both cached and uncached scenarios with performance benchmarking
+
+#### Test Categories
+
+- **Unit Tests**: Individual components with isolated mocking
+- **Integration Tests**: Component interaction validation
+- **Performance Tests**: Speed and scalability benchmarking
+- **Security Tests**: Boundary testing and injection prevention
+- **Contract Tests**: External API dependency validation
 
 ## License
 
