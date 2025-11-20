@@ -28,32 +28,51 @@ A **production-ready** PHP application that fetches user data from a public API 
 - PHP 8.1 or higher
 - Composer
 
-## Installation
+## Installation and Usage
 
 You can run this application using either local PHP development environment or Docker.
 
-### Local Installation
+### Local Setup (Recommended for Development)
 
-1. Clone the repository:
+1. **Clone the repository:**
 
    ```bash
    git clone https://github.com/przemekp95/user-data-api-client.git
    cd user-data-api-client
    ```
 
-2. Install PHP dependencies:
+2. **Install PHP dependencies:**
 
    ```bash
    composer install
    ```
 
-3. Run tests to verify installation:
+3. **Run tests to verify installation:**
 
    ```bash
    composer test
    ```
 
    > **Expected Output:** `OK (50 tests, 243 assertions)` - confirming all functionality works correctly.
+
+4. **Start the development server:**
+
+   ```bash
+   cd public
+   php -S localhost:8000
+   ```
+
+5. **Test the application:**
+
+   Open in browser: `http://localhost:8000/index.php?id=1`
+
+   Or test with curl:
+
+   ```bash
+   curl -f "http://localhost:8000/index.php?id=1"
+   ```
+
+   > **Expected Response:** JSON object with user data, confirming the server works correctly.
 
 ### Docker Installation
 
@@ -261,17 +280,6 @@ Guzzle won because:
 Cache implements proper interface, so it can be easily replaced with any storage without changing business logic (Dependency Inversion Principle).
 
 ## Development
-
-### Running Locally
-
-Start a PHP development server:
-
-```bash
-cd public
-php -S localhost:8000
-```
-
-Then visit: `http://localhost:8000/index.php?id=1`
 
 ### Code Style
 
