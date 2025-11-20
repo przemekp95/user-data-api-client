@@ -56,7 +56,7 @@ class ApiContractTest extends TestCase
         $this->assertIsString($response['company']['name']);
 
         // Validate email format
-        $this->assertStringContains('@', $response['email']);
+        $this->assertStringContainsString('@', $response['email']);
         $this->assertGreaterThan(0, $response['id']);
     }
 
@@ -109,7 +109,7 @@ class ApiContractTest extends TestCase
         // Check if response headers indicate 404 (if available)
         if (isset($http_response_header)) {
             $statusLine = $http_response_header[0] ?? '';
-            $this->assertStringContains('404', $statusLine, 'HTTP status should be 404 for non-existent user');
+            $this->assertStringContainsString('404', $statusLine, 'HTTP status should be 404 for non-existent user');
         }
     }
 
