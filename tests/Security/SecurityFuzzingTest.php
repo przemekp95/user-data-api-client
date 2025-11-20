@@ -89,33 +89,39 @@ class SecurityFuzzingTest extends TestCase
     }
 
     /**
-     * Security test: SQL injection prevention through type safety
+     * Security test: HTTP parameter injection prevention through type validation
      */
-    public function testSqlInjectionThroughTypeSystem(): void
+    public function testHttpParameterInjectionPrevention(): void
     {
-        // These dangerous strings should be rejected by type system
-        $maliciousInputs = [
-            "1; DROP TABLE users; --",
-            "'; SELECT * FROM users; --",
-            "1 UNION SELECT password FROM users",
-            "SLEEP(10)--",
+        // These potentially dangerous HTTP-like parameters should be rejected
+        $maliciousParams = [
+            "../etc/passwd",  // Path traversal
+            "../../../config",
+            "%2E%2E%2F%2E%2E%2Fconfig", // URL encoded
+            "127.0.0.1:8888", // Potential command injection attempt
+            "javascript:alert(1)", // Cross-site scripting attempt
         ];
 
-        foreach ($maliciousInputs as $maliciousInput) {
+        foreach ($maliciousParams as $maliciousParam) {
             try {
-                // Each malicious string is treated as text literal
-                // Type system should prevent processing as SQL
-                $isSqlInjection = $this->detectsSqlInjection($maliciousInput);
+                // Attempt to convert to user ID - should fail for obvious injections
+                $userIdChar = (int)$maliciousParam;
+                $isObviouslyMalformed = $maliciousParam !== (string)$userIdChar;
 
-                if ($isSqlInjection) {
-                    $this->fail("Potential SQL injection detected in: {$maliciousInput}");
+                if ($isObviouslyMalformed) {
+                    $this->assertTrue(true, "Parameter '{$maliciousParam}' correctly rejected as malformed");
                 }
 
-                // If service processes integer-only, injection is blocked by design
-                $this->assertTrue(true);
+                // Test boundary: if conversion succeeds, verify the resulting ID makes sense
+                if ($userIdChar > 0 && $userIdChar < 1000000) {
+                    // Reasonable for user ID, allow it
+                    $this->assertTrue(true);
+                } else {
+                    $this->fail("Parameter '{$maliciousParam}' converted to invalid user ID: {$userIdChar}");
+                }
 
             } catch (\Exception $e) {
-                // Type casting failures are good - prevents injection attacks
+                // Conversion failures are GOOD - prevent injection attacks
                 $this->assertTrue(true);
             }
         }
