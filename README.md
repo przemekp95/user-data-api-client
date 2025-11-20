@@ -53,7 +53,7 @@ You can run this application using either local PHP development environment or D
    composer test
    ```
 
-   > **Expected Output:** `OK (46 tests, 226 assertions)` - confirming all functionality works correctly.
+   > **Expected Output:** `OK (50 tests, 243 assertions)` - confirming all functionality works correctly.
 
 ### Docker Installation
 
