@@ -10,7 +10,7 @@ A **production-ready** PHP application that fetches user data from a public API 
 **✨ Key Features:**
 
 - **Enterprise-grade architecture** with clean separation of concerns
-- **Comprehensive test suite** with 46 tests covering all functionality
+- **Comprehensive test suite** with 50 tests covering all functionality
 - **Security-first** design with multiple protection layers
 - **Production-ready** deployment with Docker and automated testing
 - **Performance optimized** with intelligent 60-second caching
@@ -59,7 +59,7 @@ You can run this application using either local PHP development environment or D
 
 #### Option 1: Use Pre-built Container Image (Recommended)
 
-Run the application directly from GitHub Container Registry without cloning the repository. Images are tested during CI/CD build process:
+Run the application directly from GitHub Container Registry without cloning the repository. Images are created from tested code:
 
 ```bash
 # Pull the latest container image from GitHub Container Registry
@@ -85,11 +85,13 @@ For customization or development, clone the repository first and build locally:
    cd user-data-api-client
    ```
 
-2. Run tests before building to verify local setup:
+2. Run tests locally to verify your setup before building:
 
    ```bash
    composer test
    ```
+
+   > **Expected Output:** `OK (50 tests, 243 assertions)` - confirming all functionality works correctly.
 
 3. Build and run the container locally:
 
@@ -282,8 +284,8 @@ The codebase follows PSR-12 coding standards and clean code principles:
 
 ### Testing
 
-- **Comprehensive test suite** with 46 tests and 226 assertions
-- **Automated testing** in all installation methods (Composer hooks + Docker builds)
+- **Comprehensive test suite** with 50 tests and 243 assertions
+- **Automated testing** using Composer hooks and CI/CD pipelines
 - **5-level testing pyramid**: Unit, Integration, Performance, Security, Contract
 - Tests written using Test-Driven Development (TDD) approach
 - Mocks used for external dependencies and third-party integrations

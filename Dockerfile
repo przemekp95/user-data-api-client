@@ -42,9 +42,6 @@ RUN composer install --optimize-autoloader
 # Copy application code
 COPY . .
 
-# Run tests during build to verify image quality (fails build if tests fail)
-RUN composer test --no-interaction
-
 # Remove dev dependencies to optimize production image size
 RUN composer install --no-dev --optimize-autoloader
 
