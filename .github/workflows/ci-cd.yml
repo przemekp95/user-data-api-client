@@ -3,6 +3,7 @@ name: CI/CD Pipeline
 permissions:
   contents: read
   security-events: write
+  packages: write
 
 on:
   push:
