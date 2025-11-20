@@ -34,6 +34,14 @@ You can run this application using either local PHP development environment or D
    composer install
    ```
 
+3. Run tests to verify installation:
+
+   ```bash
+   composer test
+   ```
+
+   > **Expected Output:** `OK (46 tests, 226 assertions)` - confirming all functionality works correctly.
+
 ### Docker Installation
 
 #### Option 1: Use Pre-built Container Image (Recommended)
@@ -46,7 +54,12 @@ docker pull ghcr.io/przemekp95/user-data-api-client:latest
 
 # Run the container
 docker run -p 8080:80 ghcr.io/przemekp95/user-data-api-client:latest
+
+# Test the running container
+curl -f "http://localhost:8080/index.php?id=1"
 ```
+
+> **Expected Response:** JSON object with user data, confirming the container works correctly.
 
 #### Option 2: Build Locally (For Development)
 
@@ -59,11 +72,23 @@ For customization or development, clone the repository first and build locally:
    cd user-data-api-client
    ```
 
-2. Build and run the container locally:
+2. Run tests before building to verify local setup:
+
+   ```bash
+   composer test
+   ```
+
+3. Build and run the container locally:
 
    ```bash
    docker build -t user-data-api-client .
    docker run -p 8080:80 user-data-api-client
+   ```
+
+4. Test the running container:
+
+   ```bash
+   curl -f "http://localhost:8080/index.php?id=1"
    ```
 
 ## Architecture

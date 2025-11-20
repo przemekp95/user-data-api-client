@@ -20,5 +20,14 @@
         "psr-4": {
             "Tests\\": "tests/"
         }
+    },
+    "scripts": {
+        "test": "phpunit",
+        "test:coverage": "phpunit --testdox",
+        "qa": [
+            "@test",
+            "php-cs-fixer fix --config=.php-cs-fixer.php --dry-run --diff --stop-on-violation --no-interaction",
+            "rector process --dry-run --no-progress-bar"
+        ]
     }
 }
