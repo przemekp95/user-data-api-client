@@ -17,8 +17,10 @@ use PHPUnit\Framework\TestCase;
 class PerformanceBenchmarkTest extends TestCase
 {
     private UserDataService $service;
+
     /** @var \PHPUnit\Framework\MockObject\MockObject&ApiClientInterface */
     private ApiClientInterface $apiClient;
+
     /** @var \PHPUnit\Framework\MockObject\MockObject&CacheInterface */
     private CacheInterface $cache;
 
@@ -60,7 +62,7 @@ class PerformanceBenchmarkTest extends TestCase
 
         // Cache should be reasonably fast (allow for PHP overhead)
         $this->assertLessThan(15.0, $cacheTime,
-            "Cache retrieval took {$cacheTime}ms - significantly slower than expected");
+            sprintf('Cache retrieval took %sms - significantly slower than expected', $cacheTime));
     }
 
     /**
@@ -141,6 +143,7 @@ class PerformanceBenchmarkTest extends TestCase
             $result = $this->service->getUserData($userId);
             $this->assertInstanceOf(UserDataDTO::class, $result);
         }
+
         $totalTime = (microtime(true) - $startTime) * 1000;
 
         $this->assertLessThan(50.0, $totalTime);

@@ -17,10 +17,12 @@ use PHPUnit\Framework\TestCase;
 class SecurityFuzzingTest extends TestCase
 {
     private UserDataService $service;
+
     /** @var \PHPUnit\Framework\MockObject\MockObject&ApiClientInterface */
-    private ApiClientInterface $apiClient;
+    private readonly ApiClientInterface $apiClient;
+
     /** @var \PHPUnit\Framework\MockObject\MockObject&CacheInterface */
-    private CacheInterface $cache;
+    private readonly CacheInterface $cache;
 
     protected function setUp(): void
     {
@@ -30,8 +32,8 @@ class SecurityFuzzingTest extends TestCase
 
         $serviceMock = new class($apiClient, $cache) extends UserDataService {
             public function __construct(
-                private ApiClientInterface $apiClient,
-                private CacheInterface $cache
+                private readonly ApiClientInterface $apiClient,
+                private readonly CacheInterface $cache
             ) {
                 parent::__construct($apiClient, $cache);
             }
@@ -75,13 +77,13 @@ class SecurityFuzzingTest extends TestCase
 
                 // Security boundary: service should not process invalid IDs
                 if ($userId < 0) {
-                    $this->fail("Service accepted negative user ID: {$userId}");
+                    $this->fail('Service accepted negative user ID: ' . $userId);
                 }
 
-            } catch (\Exception $e) {
+            } catch (\Exception) {
                 // Exception is acceptable for boundary violations
                 $this->assertTrue(true); // Boundary properly enforced
-            } catch (\Throwable $t) {
+            } catch (\Throwable) {
                 // Type errors are also security boundary enforcement
                 $this->assertTrue(true);
             }
@@ -109,7 +111,7 @@ class SecurityFuzzingTest extends TestCase
                 $isObviouslyMalformed = $maliciousParam !== (string)$userIdChar;
 
                 if ($isObviouslyMalformed) {
-                    $this->assertTrue(true, "Parameter '{$maliciousParam}' correctly rejected as malformed");
+                    $this->assertTrue(true, sprintf("Parameter '%s' correctly rejected as malformed", $maliciousParam));
                 }
 
                 // Test boundary: if conversion succeeds, verify the resulting ID makes sense
@@ -117,10 +119,10 @@ class SecurityFuzzingTest extends TestCase
                     // Reasonable for user ID, allow it
                     $this->assertTrue(true);
                 } else {
-                    $this->fail("Parameter '{$maliciousParam}' converted to invalid user ID: {$userIdChar}");
+                    $this->fail(sprintf("Parameter '%s' converted to invalid user ID: %d", $maliciousParam, $userIdChar));
                 }
 
-            } catch (\Exception $e) {
+            } catch (\Exception) {
                 // Conversion failures are GOOD - prevent injection attacks
                 $this->assertTrue(true);
             }
@@ -160,11 +162,11 @@ class SecurityFuzzingTest extends TestCase
                     $this->fail("Service accepted non-integer input: " . var_export($input, true));
                 }
 
-            } catch (\TypeError $e) {
+            } catch (\TypeError) {
                 // Type errors are GOOD - protect against malformed input
                 $this->assertTrue(true);
 
-            } catch (\Exception $e) {
+            } catch (\Exception) {
                 // Other exceptions are acceptable boundary protection
                 $this->assertTrue(true);
             }

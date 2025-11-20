@@ -93,7 +93,7 @@ class ApiContractTest extends TestCase
     {
         // Test with very high user ID that should not exist
         $nonExistentId = 999999;
-        $url = self::JSONPLACEHOLDER_API . "/users/{$nonExistentId}";
+        $url = self::JSONPLACEHOLDER_API . ('/users/' . $nonExistentId);
 
         $context = stream_context_create([
             'http' => [
@@ -118,7 +118,7 @@ class ApiContractTest extends TestCase
      */
     private function fetchUserDataFromApi(int $userId): array
     {
-        $url = self::JSONPLACEHOLDER_API . "/users/{$userId}";
+        $url = self::JSONPLACEHOLDER_API . ('/users/' . $userId);
 
         $context = stream_context_create([
             'http' => [
