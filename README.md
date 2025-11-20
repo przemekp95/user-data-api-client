@@ -66,57 +66,6 @@ For customization or development, clone the repository first and build locally:
    docker run -p 8080:80 user-data-api-client
    ```
 
-2. Install PHP dependencies:
-
-   ```bash
-   composer install
-   ```
-
-### Docker Installation
-
-#### Option 1: Use Pre-built Container Image (Recommended)
-
-Run the application directly from GitHub Container Registry without cloning the repository:
-
-```bash
-# Pull the latest container image from GitHub Container Registry
-docker pull ghcr.io/przemekp95/user-data-api-client:latest
-
-# Run the container
-docker run -p 8080:80 ghcr.io/przemekp95/user-data-api-client:latest
-```
-
-#### Option 2: Build Locally (For Development)
-
-For customization or development, clone the repository first and build locally:
-
-1. Clone the repository:
-
-   ```bash
-   git clone https://github.com/przemekp95/user-data-api-client.git
-   cd user-data-api-client
-   ```
-
-2. Build and run the container locally:
-
-   ```bash
-   docker build -t user-data-api-client .
-   docker run -p 8080:80 user-data-api-client
-
-Execute all tests using PHPUnit:
-
-```bash
-composer test
-# or
-php vendor/bin/phpunit
-```
-
-### Test Coverage
-
-- **UserDataDTOTest**: Tests data transfer object functionality
-- **UserDataServiceTest**: Tests business logic and caching behavior
-- **InMemoryCacheTest**: Tests cache operations and expiration
-
 ## Architecture
 
 Following clean architecture and SOLID principles:
