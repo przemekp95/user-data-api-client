@@ -109,11 +109,12 @@ jobs:
         labels: ${{ steps.meta.outputs.labels }}
 
     - name: Run Trivy vulnerability scanner
-      uses: docker://aquasecurity/trivy:latest
+      uses: aquasecurity/trivy-action@v0.65.0
       with:
         scan-type: 'image'
         scan-ref: 'ghcr.io/${{ github.repository_owner }}/php-user-api:latest'
         format: 'sarif'
+        exit-code: 1
         output: 'trivy-results.sarif'
 
     - name: Upload Trivy scan results to GitHub Security tab
