@@ -42,7 +42,7 @@ class ApiContractTest extends TestCase
     }
 
     /**
-     * Test API data types match our expectations
+     * Test API data types match our expectations.
      */
     public function testApiDataTypes(): void
     {
@@ -61,7 +61,7 @@ class ApiContractTest extends TestCase
     }
 
     /**
-     * Test multiple users to ensure consistent response structure
+     * Test multiple users to ensure consistent response structure.
      */
     public function testMultipleUsersConsistency(): void
     {
@@ -87,7 +87,7 @@ class ApiContractTest extends TestCase
     }
 
     /**
-     * Test error responses for non-existent users
+     * Test error responses for non-existent users.
      */
     public function testApiErrorResponses(): void
     {
@@ -114,7 +114,7 @@ class ApiContractTest extends TestCase
     }
 
     /**
-     * Helper method to fetch user data from external API
+     * Helper method to fetch user data from external API.
      */
     private function fetchUserDataFromApi(int $userId): array
     {

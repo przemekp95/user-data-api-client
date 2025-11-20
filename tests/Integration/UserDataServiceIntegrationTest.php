@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Integration;
 
-use App\Application\Services\UserDataService;
 use App\Application\Interfaces\ApiClientInterface;
 use App\Application\Interfaces\CacheInterface;
+use App\Application\Services\UserDataService;
 use App\Domain\DTO\UserDataDTO;
 use PHPUnit\Framework\TestCase;
 
@@ -34,7 +34,7 @@ class UserDataServiceIntegrationTest extends TestCase
     }
 
     /**
-     * Test service fetches from cache when available
+     * Test service fetches from cache when available.
      */
     public function testServiceFetchesFromCacheWhenAvailable(): void
     {
@@ -57,7 +57,7 @@ class UserDataServiceIntegrationTest extends TestCase
     }
 
     /**
-     * Test service fetches from API and caches result when cache miss
+     * Test service fetches from API and caches result when cache miss.
      */
     public function testServiceFetchesFromApiAndCachesOnCacheMiss(): void
     {
@@ -94,7 +94,7 @@ class UserDataServiceIntegrationTest extends TestCase
     }
 
     /**
-     * Test error propagation through service layers
+     * Test error propagation through service layers.
      */
     public function testErrorPropagationToService(): void
     {
@@ -119,7 +119,7 @@ class UserDataServiceIntegrationTest extends TestCase
     }
 
     /**
-     * Test data transformation validation
+     * Test data transformation validation.
      */
     public function testDataTransformationIsValid(): void
     {

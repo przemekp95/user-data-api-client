@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Security;
 
-use App\Application\Services\UserDataService;
 use App\Application\Interfaces\ApiClientInterface;
 use App\Application\Interfaces\CacheInterface;
+use App\Application\Services\UserDataService;
 use App\Domain\DTO\UserDataDTO;
 use PHPUnit\Framework\TestCase;
 
@@ -19,10 +19,10 @@ class SecurityFuzzingTest extends TestCase
     private UserDataService $service;
 
     /** @var \PHPUnit\Framework\MockObject\MockObject&ApiClientInterface */
-    private ApiClientInterface $apiClient;
+    private readonly ApiClientInterface $apiClient;
 
     /** @var \PHPUnit\Framework\MockObject\MockObject&CacheInterface */
-    private CacheInterface $cache;
+    private readonly CacheInterface $cache;
 
     protected function setUp(): void
     {
@@ -30,21 +30,23 @@ class SecurityFuzzingTest extends TestCase
         $apiClient = $this->createStub(ApiClientInterface::class);
         $cache = $this->createStub(CacheInterface::class);
 
-        $serviceMock = new class($apiClient, $cache) extends UserDataService {
+        $serviceMock = new class ($apiClient, $cache) extends UserDataService {
             public function __construct(
-                private ApiClientInterface $apiClient,
-                private CacheInterface $cache
+                private readonly ApiClientInterface $apiClient,
+                private readonly CacheInterface $cache
             ) {
                 parent::__construct($apiClient, $cache);
             }
 
             // Override to control response for testing
-            public function getUserData(int $userId): UserDataDTO {
+            public function getUserData(int $userId): UserDataDTO
+            {
                 $apiResponse = $this->callApi($userId);
                 return $apiResponse ?? new UserDataDTO(1, 'Test', 'test@test.com', 'City', 'Company');
             }
 
-            private function callApi(int $userId): ?UserDataDTO {
+            private function callApi(int $userId): ?UserDataDTO
+            {
                 // Mock API behavior for security tests
                 return ($userId >= 0) ?
                     new UserDataDTO($userId, 'User', 'user@test.com', 'City', 'Company') : null;
@@ -55,7 +57,7 @@ class SecurityFuzzingTest extends TestCase
     }
 
     /**
-     * Security test: extreme boundary values for user IDs
+     * Security test: extreme boundary values for user IDs.
      */
     public function testExtremeUserIdBoundaries(): void
     {
@@ -91,17 +93,17 @@ class SecurityFuzzingTest extends TestCase
     }
 
     /**
-     * Security test: HTTP parameter injection prevention through type validation
+     * Security test: HTTP parameter injection prevention through type validation.
      */
     public function testHttpParameterInjectionPrevention(): void
     {
         // These potentially dangerous HTTP-like parameters should be rejected
         $maliciousParams = [
-            "../etc/passwd",  // Path traversal
-            "../../../config",
-            "%2E%2E%2F%2E%2E%2Fconfig", // URL encoded
-            "127.0.0.1:8888", // Potential command injection attempt
-            "javascript:alert(1)", // Cross-site scripting attempt
+            '../etc/passwd',  // Path traversal
+            '../../../config',
+            '%2E%2E%2F%2E%2E%2Fconfig', // URL encoded
+            '127.0.0.1:8888', // Potential command injection attempt
+            'javascript:alert(1)', // Cross-site scripting attempt
         ];
 
         foreach ($maliciousParams as $maliciousParam) {
@@ -130,7 +132,7 @@ class SecurityFuzzingTest extends TestCase
     }
 
     /**
-     * Security test: malformed input protection
+     * Security test: malformed input protection.
      */
     public function testMalformedInputProtection(): void
     {
@@ -159,7 +161,7 @@ class SecurityFuzzingTest extends TestCase
                 // Special cases: float truncated, boolean converted
                 if (is_float($input) || is_bool($input)) {
                     // Relying on implicit conversion is NOT secure
-                    $this->fail("Service accepted non-integer input: " . var_export($input, true));
+                    $this->fail('Service accepted non-integer input: ' . var_export($input, true));
                 }
 
             } catch (\TypeError) {
@@ -174,7 +176,7 @@ class SecurityFuzzingTest extends TestCase
     }
 
     /**
-     * Helper: detect basic SQL injection patterns (simplified)
+     * Helper: detect basic SQL injection patterns (simplified).
      */
     private function detectsSqlInjection(string $input): bool
     {

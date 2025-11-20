@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Performance;
 
-use App\Application\Services\UserDataService;
 use App\Application\Interfaces\ApiClientInterface;
 use App\Application\Interfaces\CacheInterface;
+use App\Application\Services\UserDataService;
 use App\Domain\DTO\UserDataDTO;
 use PHPUnit\Framework\TestCase;
 
@@ -36,7 +36,7 @@ class PerformanceBenchmarkTest extends TestCase
     }
 
     /**
-     * Benchmark warm cache performance with realistic cache operations
+     * Benchmark warm cache performance with realistic cache operations.
      */
     public function testWarmCachePerformanceWithRealisticBehavior(): void
     {
@@ -61,12 +61,15 @@ class PerformanceBenchmarkTest extends TestCase
         $this->assertEquals($expectedDto, $result);
 
         // Cache should be reasonably fast (allow for PHP overhead)
-        $this->assertLessThan(15.0, $cacheTime,
-            sprintf('Cache retrieval took %sms - significantly slower than expected', $cacheTime));
+        $this->assertLessThan(
+            15.0,
+            $cacheTime,
+            sprintf('Cache retrieval took %sms - significantly slower than expected', $cacheTime)
+        );
     }
 
     /**
-     * Benchmark cache miss scenario (API call + cache write)
+     * Benchmark cache miss scenario (API call + cache write).
      */
     public function testCacheMissPerformanceWithApiCall(): void
     {
@@ -109,7 +112,7 @@ class PerformanceBenchmarkTest extends TestCase
     }
 
     /**
-     * Test cache operation frequency under load
+     * Test cache operation frequency under load.
      */
     public function testCacheOperationFrequencyUnderLoad(): void
     {
@@ -152,7 +155,7 @@ class PerformanceBenchmarkTest extends TestCase
     }
 
     /**
-     * Benchmark service response consistency
+     * Benchmark service response consistency.
      */
     public function testServiceResponseConsistency(): void
     {
