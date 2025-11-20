@@ -1,5 +1,5 @@
-# PHP API container for development  
-FROM php:8.1-apache
+# PHP API container for development
+FROM php:8.2-apache
 
 # Install system dependencies and PHP extensions
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -37,13 +37,10 @@ WORKDIR /var/www/html
 # Copy composer files and install dependencies (include dev for testing)
 COPY composer.json composer.lock* ./
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-RUN composer install --optimize-autoloader
+RUN composer install --no-dev --optimize-autoloader
 
 # Copy application code
 COPY . .
-
-# Remove dev dependencies to optimize production image size
-RUN composer install --no-dev --optimize-autoloader
 
 # Set proper ownership
 RUN chown -R www-data:www-data /var/www/html
