@@ -161,6 +161,7 @@ The endpoint implements multiple layers of security protection.
 #### HTTP Client Selection
 
 Among the available options, the following choices were made:
+
 - **GuzzleHttp\Client** - Implemented ✅
 - `file_get_contents()` + `json_decode()` - Rejected
 - Other methods (e.g., cURL, fsockopen, etc.) - Rejected
@@ -168,6 +169,7 @@ Among the available options, the following choices were made:
 #### Justification for Choosing GuzzleHttp Client
 
 **Advantages of GuzzleHttp\Client:**
+
 - **Asynchronous support**: Enables future extensions with asynchronous requests without API changes
 - **Exceptional error handling**: Automatic mapping of HTTP errors to PHP exceptions with context
 - **Middleware Pipeline**: Easy addition of cross-cutting functionality (logging, retry, cache headers)
@@ -204,12 +206,14 @@ Guzzle won because:
 #### In-Memory Cache Selection
 
 **In-Memory Cache was chosen because:**
+
 - **Simple Requirements**: The task requires cache only for a single process/request
 - **KISS Principle**: Simplest solution meeting requirements
 - **Zero-dependencies**: No need for databases or external services for this task
 - **Performance**: Memory is the fastest possible storage
 
 **Rejected Alternatives:**
+
 - **Redis/Memcached**: Overkill for single process, introduces external dependency
 - **File-based cache**: Reduces performance, concurrency issues with multiple processes
 - **Database cache**: Unnecessary for temporary caching, persistence overhead
