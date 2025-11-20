@@ -131,7 +131,7 @@ jobs:
       uses: aquasecurity/trivy-action@master
       with:
         scan-type: 'image'
-        scan-ref: 'ghcr.io/${{ github.repository_owner }}/php-user-api:latest'
+        scan-ref: 'ghcr.io/${{ github.actor }}/php-user-api:latest'
         format: 'sarif'
         output: 'trivy-results.sarif'
 
@@ -147,7 +147,7 @@ jobs:
         echo "" >> $GITHUB_STEP_SUMMARY
         echo "### ✅ Deployment Status" >> $GITHUB_STEP_SUMMARY
         echo "- **Registry**: GitHub Container Registry (ghcr.io)" >> $GITHUB_STEP_SUMMARY
-        echo "- **Image**: ${{ github.repository_owner }}/php-user-api" >> $GITHUB_STEP_SUMMARY
+        echo "- **Image**: ${{ github.actor }}/php-user-api" >> $GITHUB_STEP_SUMMARY
         echo "- **Tag**: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
         echo "- **Security**: Trivy vulnerability scan completed" >> $GITHUB_STEP_SUMMARY
         echo "- **Quality Gates**: All CI/CD checks passed" >> $GITHUB_STEP_SUMMARY
@@ -158,6 +158,6 @@ jobs:
         echo "- **Automated Security**: SARIF reports integration" >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY
         echo "### 📋 Usage Instructions" >> $GITHUB_STEP_SUMMARY
-        echo "Pull latest image: \`docker pull ghcr.io/${{ github.repository_owner }}/php-user-api:latest\`" >> $GITHUB_STEP_SUMMARY
-        echo "Run container: \`docker run -d -p 80:80 ghcr.io/${{ github.repository_owner }}/php-user-api:latest\`" >> $GITHUB_STEP_SUMMARY
+        echo "Pull latest image: \`docker pull ghcr.io/${{ github.actor }}/php-user-api:latest\`" >> $GITHUB_STEP_SUMMARY
+        echo "Run container: \`docker run -d -p 80:80 ghcr.io/${{ github.actor }}/php-user-api:latest\`" >> $GITHUB_STEP_SUMMARY
         echo "Test API: \`curl http://localhost?id=1\`" >> $GITHUB_STEP_SUMMARY
