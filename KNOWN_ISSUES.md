@@ -7,6 +7,7 @@
 Several development tools use abandoned libraries as dependencies, but these are intentionally kept for PHP 8.1 compatibility reasons:
 
 #### `doctrine/annotations` (abandoned)
+
 - **Used by**: `friendsofphp/php-cs-fixer` v3.8.0
 - **Issue**: Library is abandoned with no suggested replacement
 - **Rationale**: PHP-CS-Fixer v3.8.0 is the last version that supports PHP 8.0+, enabling class/method annotation processing in CI environments
@@ -14,6 +15,7 @@ Several development tools use abandoned libraries as dependencies, but these are
 - **Recourse**: Upgrade to newer PHP versions (8.2+) to use PHP-CS-Fixer v3.11+ which uses `doctrine/annotations` replacement
 
 #### `php-cs-fixer/diff` (abandoned)
+
 - **Used by**: `friendsofphp/php-cs-fixer` v3.8.0
 - **Issue**: Library is abandoned with no suggested replacement
 - **Rationale**: Required for diff analysis in code formatting validation
@@ -23,6 +25,7 @@ Several development tools use abandoned libraries as dependencies, but these are
 ### PHP Version Constraints
 
 #### Minimum PHP 8.1 Requirement
+
 - **Constraint**: All dependencies require minimum PHP 8.1
 - **Development Tools**: Limited to older versions due to PHP compatibility
 - **Production Code**: Fully compatible and optimized for PHP 8.1+
@@ -43,6 +46,7 @@ The chosen approach provides **functional development tools** with transparent d
 ### Migration Path
 
 To eliminate these warnings:
+
 1. Upgrade project to PHP 8.2+
 2. Update development tools to latest versions
 3. Remove abandoned dependency constraints
