@@ -175,27 +175,27 @@ Among the available options, the following choices were made:
 - **Rich ecosystem**: Large community, good support, regular security updates
 - **Configurability**: Timeout, proxy, SSL certificates, redirect handling - all ready to use out of the box
 
-#### Dlaczego nie file_get_contents() + json_decode()?
+#### Why not file_get_contents() + json_decode()?
 
-1. **Brak obsługi błędów HTTP**: `file_get_contents()` nie rozróżnia błędów 4xx/5xx od prawidłowych odpowiedzi
-2. **Brak równoległego przetwarzania**: Wszystko synchroniczne, zablokuje cały wątek podczas oczekiwania
-3. **Ograniczone opcje konfiguracyjne**: Brak kontroli timeout, headers, SSL verification
-4. **Security concerns**: Brak wbudowanych mechanizmów przeciwko SSRF czy injection
-5. **Nieprzemyślana architektura**: Łamie zasade "Fail Fast", błędy JSON nie są odpowiednio obsłużone
-6. **Słaba testowalność**: Trudno mockować czy testować w izolacji
+1. **Lack of HTTP error handling**: `file_get_contents()` doesn't distinguish 4xx/5xx errors from valid responses
+2. **No parallel processing**: Everything is synchronous, blocking the entire thread while waiting
+3. **Limited configuration options**: No control over timeout, headers, SSL verification
+4. **Security concerns**: Lack of built-in mechanisms against SSRF or injection
+5. **Poor architecture**: Breaks the "Fail Fast" principle, JSON errors aren't properly handled
+6. **Poor testability**: Difficult to mock or test in isolation
 
-#### Dlaczego nie cURL functions ani inne niskopoziomowe metody?
+#### Why not cURL functions or other low-level methods?
 
-1. **Duplikacja kodu**: Manuelne zarządzanie connections, headers, error codes = więcej boilerplate
-2. **Ryzyko błędów**: Niższa abstrakcja prowadzi do pomyłek w obsłudze edge cases
-3. **Maintenance overhead**: Własna implementacja protokołu HTTP zamiast używania battle-tested library
+1. **Code duplication**: Manual management of connections, headers, error codes = more boilerplate
+2. **Error risk**: Lower abstraction leads to mistakes in handling edge cases
+3. **Maintenance overhead**: Custom HTTP protocol implementation instead of using battle-tested library
 
-#### Dlaczego nie inne high-level biblioteki?
+#### Why not other high-level libraries?
 
-Guzzle wygrał ponieważ:
-- Jest najbardziej popularną i zaufaną biblioteką HTTP w PHP ekosystemie
-- Ma najlepsze wsparcie PSR-7, co czyni go przyszłościowo kompatybilnym
-- Zapewnia optymalną równowagę między funkcjonalnością a prostotą
+Guzzle won because:
+- It is the most popular and trusted HTTP library in the PHP ecosystem
+- It has the best PSR-7 support, making it future-compatible
+- It provides optimal balance between functionality and simplicity
 
 ### Cache Implementation
 
