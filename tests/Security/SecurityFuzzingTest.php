@@ -19,10 +19,10 @@ class SecurityFuzzingTest extends TestCase
     private UserDataService $service;
 
     /** @var \PHPUnit\Framework\MockObject\MockObject&ApiClientInterface */
-    private readonly ApiClientInterface $apiClient;
+    private ApiClientInterface $apiClient;
 
     /** @var \PHPUnit\Framework\MockObject\MockObject&CacheInterface */
-    private readonly CacheInterface $cache;
+    private CacheInterface $cache;
 
     protected function setUp(): void
     {
@@ -32,8 +32,8 @@ class SecurityFuzzingTest extends TestCase
 
         $serviceMock = new class ($apiClient, $cache) extends UserDataService {
             public function __construct(
-                private readonly ApiClientInterface $apiClient,
-                private readonly CacheInterface $cache
+                private ApiClientInterface $apiClient,
+                private CacheInterface $cache
             ) {
                 parent::__construct($apiClient, $cache);
             }
