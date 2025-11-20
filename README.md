@@ -158,7 +158,7 @@ The endpoint implements multiple layers of security protection.
 
 #### GuzzleHttp Client
 
-#### Wybór GuzzleHttp\Client
+#### Wybór GuzzleHttp Client
 Spośród dostępnych opcji zostały wybrane następujące opcje:
 - **GuzzleHttp\Client** - Zaimplementowana ✅
 - `file_get_contents()` + `json_decode()` - Odrzucona
@@ -200,7 +200,7 @@ Guzzle wygrał ponieważ:
 
 #### In-Memory Cache
 
-#### Wybór In-Memory Cache zamiast innych rozwiązań:
+#### Wybór In-Memory Cache zamiast innych rozwiązań
 
 **In-Memory Cache wybrany ponieważ:**
 - **Simple Requirements**: Zadanie wymaga cache tylko dla pojedynczego procesu/requestu
