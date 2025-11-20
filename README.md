@@ -104,9 +104,15 @@ For customization or development, clone the repository first and build locally:
    cd user-data-api-client
    ```
 
-2. Run tests locally to verify your setup before building:
+2. **⚠️ Important: Install dependencies before testing!**
+
+   Build locally only after verifying your setup:
 
    ```bash
+   # First, install dependencies (required for tests)
+   composer install
+
+   # Then verify installation with tests
    composer test
    ```
 
