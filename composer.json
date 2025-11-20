@@ -22,8 +22,8 @@
         }
     },
     "scripts": {
-        "test": "phpunit",
-        "test:coverage": "phpunit --testdox",
+        "test": "vendor/bin/phpunit",
+        "test:coverage": "vendor/bin/phpunit --testdox",
         "post-install-cmd": "@test",
         "post-update-cmd": "@test",
         "qa": [
