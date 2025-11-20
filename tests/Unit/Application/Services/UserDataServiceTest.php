@@ -13,12 +13,14 @@ use RuntimeException;
 
 /**
  * Test Driven Development - comprehensive tests for UserDataService
- * Tests caching behavior, error handling, and business logic
+ * Tests caching behavior, error handling, and business logic.
  */
 class UserDataServiceTest extends TestCase
 {
     private ApiClientInterface $apiClient;
+
     private CacheInterface $cache;
+
     private UserDataService $service;
 
     protected function setUp(): void
@@ -123,6 +125,64 @@ class UserDataServiceTest extends TestCase
 
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('API response missing required user data fields');
+
+        $this->service->getUserData($userId);
+    }
+
+    public function testThrowsExceptionForInvalidApiResponseStructure(): void
+    {
+        $userId = 1;
+        $invalidApiResponse = [
+            'id' => 1,
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+            'address' => ['invalid_city' => 'City'], // Missing 'city' key
+            'company' => 'Invalid Company' // Should be array
+        ];
+
+        // Mock cache miss
+        $this->cache->expects($this->once())
+            ->method('get')
+            ->with('user_data_1')
+            ->willReturn(null);
+
+        // Mock API returning invalid data structure
+        $this->apiClient->expects($this->once())
+            ->method('fetchUserData')
+            ->with(1)
+            ->willReturn($invalidApiResponse);
+
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('API response missing address.city field');
+
+        $this->service->getUserData($userId);
+    }
+
+    public function testThrowsExceptionForMissingCompanyStructure(): void
+    {
+        $userId = 1;
+        $invalidApiResponse = [
+            'id' => 1,
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+            'address' => ['city' => 'Test City'],
+            'company' => 'Invalid Company String' // Should be array, missing 'name' key
+        ];
+
+        // Mock cache miss
+        $this->cache->expects($this->once())
+            ->method('get')
+            ->with('user_data_1')
+            ->willReturn(null);
+
+        // Mock API returning invalid data structure where company is not an array
+        $this->apiClient->expects($this->once())
+            ->method('fetchUserData')
+            ->with(1)
+            ->willReturn($invalidApiResponse);
+
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('API response missing company.name field');
 
         $this->service->getUserData($userId);
     }

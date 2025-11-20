@@ -8,11 +8,10 @@ use App\Application\Interfaces\ApiClientInterface;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use RuntimeException;
-use Psr\Http\Message\ResponseInterface;
 
 /**
  * Guzzle-based API client implementation
- * Following Dependency Inversion Principle through interface implementation
+ * Following Dependency Inversion Principle through interface implementation.
  */
 class GuzzleApiClient implements ApiClientInterface
 {
@@ -20,15 +19,16 @@ class GuzzleApiClient implements ApiClientInterface
 
     public function __construct(
         private readonly ClientInterface $httpClient,
-    ) {}
+    ) {
+    }
 
     public function fetchUserData(int $userId): array
     {
         try {
-            $response = $this->httpClient->request('GET', self::BASE_URL . "/users/{$userId}");
+            $response = $this->httpClient->request('GET', self::BASE_URL . ('/users/' . $userId));
 
             if ($response->getStatusCode() !== 200) {
-                throw new RuntimeException("API returned status code {$response->getStatusCode()}");
+                throw new RuntimeException('API returned status code ' . $response->getStatusCode());
             }
 
             $data = json_decode($response->getBody()->getContents(), true, 512, JSON_THROW_ON_ERROR);
@@ -38,16 +38,16 @@ class GuzzleApiClient implements ApiClientInterface
             }
 
             return $this->validateResponseStructure($data);
-        } catch (GuzzleException $e) {
-            throw new RuntimeException("Failed to fetch user data: {$e->getMessage()}", 0, $e);
+        } catch (GuzzleException $guzzleException) {
+            throw new RuntimeException('Failed to fetch user data: ' . $guzzleException->getMessage(), 0, $guzzleException);
         }
     }
 
     /**
-     * Validate that response contains required fields for our use case
+     * Validate that response contains required fields for our use case.
      *
-     * @param array $data Raw API response
-     * @return array Validated response data
+     * @param  array            $data Raw API response
+     * @return array            Validated response data
      * @throws RuntimeException When required fields are missing
      */
     private function validateResponseStructure(array $data): array
@@ -56,7 +56,7 @@ class GuzzleApiClient implements ApiClientInterface
 
         foreach ($requiredFields as $field) {
             if (!array_key_exists($field, $data)) {
-                throw new RuntimeException("Required field '{$field}' is missing from API response");
+                throw new RuntimeException(sprintf("Required field '%s' is missing from API response", $field));
             }
         }
 
