@@ -17,85 +17,76 @@ A simple PHP application that fetches user data from a public API with caching f
 
 ## Installation
 
+You can run this application using either local PHP development environment or Docker.
+
+### Local Installation
+
 1. Clone the repository:
-```bash
-git clone <repository-url>
-cd user-data-api-client
-```
 
-2. Install dependencies:
-```bash
-composer install
-```
+   ```bash
+   git clone https://github.com/przemekp95/user-data-api-client.git
+   cd user-data-api-client
+   ```
 
-## Usage
+2. Install PHP dependencies:
 
-### API Endpoint
+   ```bash
+   composer install
+   ```
 
-The application provides a single HTTP endpoint:
+### Docker Installation
 
-**GET** `/public/index.php?id={user_id}`
+#### Option 1: Use Pre-built Container Image (Recommended)
 
-Parameters:
-- `id` (optional): User ID to fetch (defaults to 1)
-
-### Response Format
-
-Returns JSON with the following structure:
-```json
-{
-  "id": 1,
-  "name": "Leanne Graham",
-  "email": "Sincere@april.biz",
-  "city": "Gwenborough",
-  "company": "Romaguera-Crona"
-}
-```
-
-### Error Responses
-
-- **400 Bad Request**: Invalid user ID (non-positive integer)
-- **500 Internal Server Error**: API failures or internal errors
-
-### Caching Behavior
-
-- Data is cached for 60 seconds
-- Subsequent requests for the same user within the cache period return cached data
-- Reduces external API calls following the DRY principle
-
-## Running Tests
-
-Execute all tests using PHPUnit:
+Run the application directly from GitHub Container Registry without cloning the repository:
 
 ```bash
-composer test
-# or
-php vendor/bin/phpunit
+# Pull the latest container image from GitHub Container Registry
+docker pull ghcr.io/przemekp95/user-data-api-client:latest
+
+# Run the container
+docker run -p 8080:80 ghcr.io/przemekp95/user-data-api-client:latest
 ```
 
-### Test Coverage
+#### Option 2: Build Locally (For Development)
 
-- **UserDataDTOTest**: Tests data transfer object functionality
-- **UserDataServiceTest**: Tests business logic and caching behavior
-- **InMemoryCacheTest**: Tests cache operations and expiration
+For customization or development, clone the repository first and build locally:
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/przemekp95/user-data-api-client.git
+   cd user-data-api-client
+   ```
+
+2. Build and run the container locally:
+
+   ```bash
+   docker build -t user-data-api-client .
+   docker run -p 8080:80 user-data-api-client
+   ```
 
 ## Architecture
 
-Following clean architecture and SOLID principles:
+Following clean architecture and SOLID principles.
 
 ### Domain Layer
+
 - `UserDataDTO`: Immutable data transfer object for API responses
 
 ### Application Layer
+
 - `ApiClientInterface`: Defines API communication contract
 - `CacheInterface`: Defines caching operations contract
 - `UserDataService`: Orchestrates API calls and caching (Single Responsibility)
 
 ### Infrastructure Layer
+
 - `GuzzleApiClient`: HTTP client implementation using Guzzle
 - `InMemoryCache`: Simple cache implementation with TTL support
 
 ### Presentation Layer
+
 - `public/index.php`: HTTP endpoint with input validation and JSON responses
 
 ## Design Principles Applied
@@ -121,9 +112,10 @@ Following clean architecture and SOLID principles:
 
 ## Security Features
 
-The endpoint implements multiple layers of security protection:
+The endpoint implements multiple layers of security protection.
 
 ### HTTP Security Headers
+
 - **Content-Security-Policy**: Prevents XSS attacks and clickjacking (`default-src 'none'; frame-ancestors 'none'`)
 - **X-Frame-Options**: DENY - Prevents clickjacking attacks
 - **X-Content-Type-Options**: nosniff - Prevents MIME type sniffing
@@ -131,21 +123,25 @@ The endpoint implements multiple layers of security protection:
 - **Permissions-Policy**: Restricts browser permissions (geolocation, microphone, camera)
 
 ### Input Security
+
 - **Parameter validation**: User ID must be positive integer
 - **Type checking**: Strict type enforcement with PHP 8.1+
 - **Input sanitization**: Numeric validation prevents injection attacks
 
 ### Access Control
+
 - **HTTP Method restriction**: Only GET requests allowed (405 Method Not Allowed for others)
 - **CORS configuration**: Controlled cross-origin access
 - **JSON-only responses**: Content-Type: application/json; charset=utf-8 enforced
 
 ### Secure Error Handling
+
 - **Fail-safe design**: Internal errors never expose sensitive information
 - **Structured error responses**: Consistent JSON error format
 - **Logging**: Secure error logging without user data exposure
 
 ### Rate Limiting & DDoS Protection
+
 - **Simple rate limiting** would be recommended for production use
 - **API keys/authentication** can be added when needed following Open/Closed Principle
 
@@ -158,62 +154,71 @@ The endpoint implements multiple layers of security protection:
 
 ## Technical Decisions
 
-### HTTP Client Choice: GuzzleHttp\Client
+### HTTP Client Choice
 
-#### Wybór GuzzleHttp\Client
-Spośród dostępnych opcji zostały wybrane następujące opcje:
-- **GuzzleHttp\Client** - Zaimplementowana ✅
-- `file_get_contents()` + `json_decode()` - Odrzucona
-- Inne metody (np. cURL, fsockopen, itd.) - Odrzucone
+#### GuzzleHttp Client
 
-#### Uzasadnienie wyboru GuzzleHttp\Client:
+#### HTTP Client Selection
 
-**Zalety GuzzleHttp\Client:**
-- **Asynchroniczność**: Obsługuje zapytania asynchroniczne, co pozwoli na przyszłe rozszerzenia bez zmiany API
-- **Wyjątkowa obsługa błędów**: Automatyczne mapowanie błędów HTTP na wyjątki PHP z kontekstem
-- **Middleware Pipeline**: Łatwe dodanie funkcjonalności cross-cutting (logowanie, retry, cache headers)
-- **PSR-7 zgodność**: Implementuje standardy PSR-7 (HTTP Messages), zapewniając interoperacyjność
-- **Bogaty ekosystem**: Duża społeczność, dobre wsparcie, regularne aktualizacje bezpieczeństwa
-- **Konfigurowalność**: Timeout, proxy, certyfikaty SSL, redirect handling - wszystko gotowe do użycia
+Among the available options, the following choices were made:
 
-#### Dlaczego nie file_get_contents() + json_decode()?
+- **GuzzleHttp\Client** - Implemented ✅
+- `file_get_contents()` + `json_decode()` - Rejected
+- Other methods (e.g., cURL, fsockopen, etc.) - Rejected
 
-1. **Brak obsługi błędów HTTP**: `file_get_contents()` nie rozróżnia błędów 4xx/5xx od prawidłowych odpowiedzi
-2. **Brak równoległego przetwarzania**: Wszystko synchroniczne, zablokuje cały wątek podczas oczekiwania
-3. **Ograniczone opcje konfiguracyjne**: Brak kontroli timeout, headers, SSL verification
-4. **Security concerns**: Brak wbudowanych mechanizmów przeciwko SSRF czy injection
-5. **Nieprzemyślana architektura**: Łamie zasade "Fail Fast", błędy JSON nie są odpowiednio obsłużone
-6. **Słaba testowalność**: Trudno mockować czy testować w izolacji
+#### Justification for Choosing GuzzleHttp Client
 
-#### Dlaczego nie cURL functions ani inne niskopoziomowe metody?
+**Advantages of GuzzleHttp\Client:**
 
-1. **Duplikacja kodu**: Manuelne zarządzanie connections, headers, error codes = więcej boilerplate
-2. **Ryzyko błędów**: Niższa abstrakcja prowadzi do pomyłek w obsłudze edge cases
-3. **Maintenance overhead**: Własna implementacja protokołu HTTP zamiast używania battle-tested library
+- **Asynchronous support**: Enables future extensions with asynchronous requests without API changes
+- **Exceptional error handling**: Automatic mapping of HTTP errors to PHP exceptions with context
+- **Middleware Pipeline**: Easy addition of cross-cutting functionality (logging, retry, cache headers)
+- **PSR-7 compliance**: Implements PSR-7 standards (HTTP Messages), ensuring interoperability
+- **Rich ecosystem**: Large community, good support, regular security updates
+- **Configurability**: Timeout, proxy, SSL certificates, redirect handling - all ready to use out of the box
 
-#### Dlaczego nie inne high-level biblioteki?
+#### Why not file_get_contents() + json_decode()?
 
-Guzzle wygrał ponieważ:
-- Jest najbardziej popularną i zaufaną biblioteką HTTP w PHP ekosystemie
-- Ma najlepsze wsparcie PSR-7, co czyni go przyszłościowo kompatybilnym
-- Zapewnia optymalną równowagę między funkcjonalnością a prostotą
+1. **Lack of HTTP error handling**: `file_get_contents()` doesn't distinguish 4xx/5xx errors from valid responses
+2. **No parallel processing**: Everything is synchronous, blocking the entire thread while waiting
+3. **Limited configuration options**: No control over timeout, headers, SSL verification
+4. **Security concerns**: Lack of built-in mechanisms against SSRF or injection
+5. **Poor architecture**: Breaks the "Fail Fast" principle, JSON errors aren't properly handled
+6. **Poor testability**: Difficult to mock or test in isolation
 
-### Cache Implementation: InMemoryCache
+#### Why not cURL functions or other low-level methods?
 
-#### Wybór In-Memory Cache zamiast innych rozwiązań:
+1. **Code duplication**: Manual management of connections, headers, error codes = more boilerplate
+2. **Error risk**: Lower abstraction leads to mistakes in handling edge cases
+3. **Maintenance overhead**: Custom HTTP protocol implementation instead of using battle-tested library
 
-**In-Memory Cache wybrany ponieważ:**
-- **Simple Requirements**: Zadanie wymaga cache tylko dla pojedynczego procesu/requestu
-- **KISS Principle**: Najprostsze rozwiązanie spełniające wymagania
-- **Zero-dependencies**: Brak potrzeby baz danych czy zewnętrznych usług dla takiego zadania
-- **Performance**: Pamięć оперативna jest najszybszym możliwym storage
+#### Why not other high-level libraries?
 
-**Alternatywy odrzucone:**
-- **Redis/Memcached**: Overkill dla pojedynczego procesu, wprowadza external dependency
-- **File-based cache**: Obniża performance, concurrency issues przy wielu procesach
-- **Database cache**: Zbyteczna dla tymczasového cachewania, overhead persistencji
+Guzzle won because:
 
-Cache implementuje właściwy interface, więc można latwo zamienić na dowolny storage bez zmiany business logic (Dependency Inversion Principle).
+- It is the most popular and trusted HTTP library in the PHP ecosystem
+- It provides optimal balance between functionality and simplicity
+
+### Cache Implementation
+
+#### In-Memory Cache
+
+#### In-Memory Cache Selection
+
+**In-Memory Cache was chosen because:**
+
+- **Simple Requirements**: The task requires cache only for a single process/request
+- **KISS Principle**: Simplest solution meeting requirements
+- **Zero-dependencies**: No need for databases or external services for this task
+- **Performance**: Memory is the fastest possible storage
+
+**Rejected Alternatives:**
+
+- **Redis/Memcached**: Overkill for single process, introduces external dependency
+- **File-based cache**: Reduces performance, concurrency issues with multiple processes
+- **Database cache**: Unnecessary for temporary caching, persistence overhead
+
+Cache implements proper interface, so it can be easily replaced with any storage without changing business logic (Dependency Inversion Principle).
 
 ## Development
 
