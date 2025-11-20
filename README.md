@@ -68,21 +68,25 @@ For customization or development, clone the repository first and build locally:
 
 ## Architecture
 
-Following clean architecture and SOLID principles:
+Following clean architecture and SOLID principles.
 
 ### Domain Layer
+
 - `UserDataDTO`: Immutable data transfer object for API responses
 
 ### Application Layer
+
 - `ApiClientInterface`: Defines API communication contract
 - `CacheInterface`: Defines caching operations contract
 - `UserDataService`: Orchestrates API calls and caching (Single Responsibility)
 
 ### Infrastructure Layer
+
 - `GuzzleApiClient`: HTTP client implementation using Guzzle
 - `InMemoryCache`: Simple cache implementation with TTL support
 
 ### Presentation Layer
+
 - `public/index.php`: HTTP endpoint with input validation and JSON responses
 
 ## Design Principles Applied
@@ -108,9 +112,10 @@ Following clean architecture and SOLID principles:
 
 ## Security Features
 
-The endpoint implements multiple layers of security protection:
+The endpoint implements multiple layers of security protection.
 
 ### HTTP Security Headers
+
 - **Content-Security-Policy**: Prevents XSS attacks and clickjacking (`default-src 'none'; frame-ancestors 'none'`)
 - **X-Frame-Options**: DENY - Prevents clickjacking attacks
 - **X-Content-Type-Options**: nosniff - Prevents MIME type sniffing
@@ -118,21 +123,25 @@ The endpoint implements multiple layers of security protection:
 - **Permissions-Policy**: Restricts browser permissions (geolocation, microphone, camera)
 
 ### Input Security
+
 - **Parameter validation**: User ID must be positive integer
 - **Type checking**: Strict type enforcement with PHP 8.1+
 - **Input sanitization**: Numeric validation prevents injection attacks
 
 ### Access Control
+
 - **HTTP Method restriction**: Only GET requests allowed (405 Method Not Allowed for others)
 - **CORS configuration**: Controlled cross-origin access
 - **JSON-only responses**: Content-Type: application/json; charset=utf-8 enforced
 
 ### Secure Error Handling
+
 - **Fail-safe design**: Internal errors never expose sensitive information
 - **Structured error responses**: Consistent JSON error format
 - **Logging**: Secure error logging without user data exposure
 
 ### Rate Limiting & DDoS Protection
+
 - **Simple rate limiting** would be recommended for production use
 - **API keys/authentication** can be added when needed following Open/Closed Principle
 
@@ -145,7 +154,9 @@ The endpoint implements multiple layers of security protection:
 
 ## Technical Decisions
 
-### HTTP Client Choice: GuzzleHttp\Client
+### HTTP Client Choice
+
+#### GuzzleHttp Client
 
 #### Wybór GuzzleHttp\Client
 Spośród dostępnych opcji zostały wybrane następujące opcje:
@@ -185,7 +196,9 @@ Guzzle wygrał ponieważ:
 - Ma najlepsze wsparcie PSR-7, co czyni go przyszłościowo kompatybilnym
 - Zapewnia optymalną równowagę między funkcjonalnością a prostotą
 
-### Cache Implementation: InMemoryCache
+### Cache Implementation
+
+#### In-Memory Cache
 
 #### Wybór In-Memory Cache zamiast innych rozwiązań:
 
