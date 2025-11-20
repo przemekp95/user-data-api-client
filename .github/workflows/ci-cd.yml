@@ -127,6 +127,10 @@ jobs:
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
 
+    - name: Pull image for scanning
+      run: |
+        docker pull ghcr.io/${{ github.actor }}/php-user-api:latest
+
     - name: Run Trivy vulnerability scanner
       uses: aquasecurity/trivy-action@master
       with:
