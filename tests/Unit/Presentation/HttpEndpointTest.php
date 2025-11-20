@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Presentation;
 
-use App\Application\Services\UserDataService;
 use App\Application\Interfaces\ApiClientInterface;
 use App\Application\Interfaces\CacheInterface;
+use App\Application\Services\UserDataService;
 use App\Domain\DTO\UserDataDTO;
 use PHPUnit\Framework\TestCase;
 
@@ -25,7 +25,7 @@ class HttpEndpointTest extends TestCase
         $apiClient = $this->createStub(ApiClientInterface::class);
         $cache = $this->createStub(CacheInterface::class);
 
-        $serviceMock = new class($apiClient, $cache) extends UserDataService {
+        $serviceMock = new class ($apiClient, $cache) extends UserDataService {
             public function __construct(
                 private readonly ApiClientInterface $apiClient,
                 private readonly CacheInterface $cache
